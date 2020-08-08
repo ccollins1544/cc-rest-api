@@ -1,14 +1,28 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var bodyParser = require("body-parser");
+const path = require("path");
+const fs = require("fs");
+require("dotenv").config({
+  path: path.resolve(__dirname, ".env"),
+  debug: process.env.DEBUG,
+});
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+const envConfig = fs.existsSync(".env.override")
+  ? require("dotenv").parse(fs.readFileSync(".env.override"))
+  : [];
+for (var k in envConfig) {
+  process.env[k] = envConfig[k];
+}
 
-var app = express();
+const createError = require("http-errors");
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const bodyParser = require("body-parser");
+const utils = require("./utils");
+
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
+
+const app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -44,5 +58,10 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+
+if (!fs.existsSync("public.pem") || !fs.existsSync("private.pem")) {
+  console.log("Generating Keys");
+  utils.generateKeys();
+}
 
 module.exports = app;

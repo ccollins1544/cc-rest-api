@@ -1,46 +1,68 @@
-var fs = require("fs");
 const path = require("path");
-var express = require("express");
-var router = express.Router();
-var jwt = require("jsonwebtoken");
+const fs = require("fs");
+const express = require("express");
+const router = express.Router();
+const jwt = require("jsonwebtoken");
 
 // Test Credentials
-const username = "billy";
-const password = "123456";
+let username = process.env.USERNAME || "ccollins";
+let password = process.env.PASSWORD || "123456";
+
+console.log("username:", process.env.USERNAME);
+console.log("password:", process.env.PASSWORD);
 
 router.post("/", (req, res, next) => {
   let p_username = req.body.username;
   let p_password = req.body.password;
 
   if (p_username == username && p_password == password) {
-    // sign with RSA SHA256
-    var privateKey = fs.readFileSync(path.resolve(__dirname, "../api.key"));
-    // var expInSeconds = 60;
-    // var expEpoch = Math.floor(Date.now() / 1000) + expInSeconds;
+    var privateKey = fs.readFileSync(
+      path.resolve(__dirname, "../private.pem"),
+      "utf8",
+    );
 
-    var token = jwt.sign(
-      {
-        // exp: Math.floor(Date.now() / 1000) + (60 * 60),
-        username: username,
-      },
-      "my-secret",
-      // privateKey,
-      // { algorithm: "HS256", expiresIn: "1h" },
-      // { algorithm: "HS256" },
-      (err, token) => {
-        console.log("token", token);
+    let payload = {
+      username: username,
+    };
 
-        res.send({
+    console.log("\n Payload: " + JSON.stringify(payload));
+
+    var iss = process.env.ISSUER || "christopher";
+    var sub = process.env.SUBJECT || "chris@ccollins.io";
+    var aud = process.env.AUDIENCE || "https://ccollins.io";
+    var exp = process.env.EXPIRATION || "1h";
+
+    var signOptions = {
+      issuer: iss,
+      subject: sub,
+      audience: aud,
+      expiresIn: exp,
+      algorithm: "RS256",
+    };
+
+    // payload.exp = Math.floor(Date.now() / 1000) + 60 * 1;
+
+    jwt.sign(payload, privateKey, signOptions, (err, token) => {
+      console.log("token", token);
+
+      if (err) {
+        console.log(err);
+
+        res.status(500).send({
+          ok: false,
+          error: err,
+        });
+      } else {
+        res.status(200).send({
           ok: true,
           message: "Login successful",
           username: username,
           token: token,
-          // exp_epoch: expEpoch,
         });
-      },
-    );
+      }
+    });
   } else {
-    res.send({
+    res.status(401).send({
       ok: false,
       message: "Username or password incorrect",
     });

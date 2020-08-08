@@ -1,3 +1,4 @@
-api.key
-api.key.pub
+.env
+.env.override
+*.pem
 node_modules

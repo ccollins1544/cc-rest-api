@@ -1,35 +1,41 @@
-var fs = require("fs");
-var path = require("path");
-let jwt = require("jsonwebtoken");
+const fs = require("fs");
+const jwt = require("jsonwebtoken");
 
 module.exports.ensureToken = function (req, res, next) {
   var bearerHeader = req.headers["authorization"];
 
   if (typeof bearerHeader !== "undefined") {
-    console.log("bearerHeader", bearerHeader);
+    let token = bearerHeader.split(" ")[1].toString();
+    let publicKey = fs.readFileSync("public.pem", "utf8");
 
-    const bearer = bearerHeader.split(" ");
-    const bearerToken = bearer[1];
-    console.log("bearerToken", bearerToken);
-    console.log("bearerToken_", bearerHeader.split(" ")[1].toString());
+    var iss = process.env.ISSUER || "christopher";
+    var sub = process.env.SUBJECT || "chris@ccollins.io";
+    var aud = process.env.AUDIENCE || "https://ccollins.io";
+    var exp = process.env.EXPIRATION || "1h";
 
-    // var cert = fs.readFileSync(path.resolve(__dirname, "api.key.pub"));
-    var cert = fs.readFileSync("./api.key.pub");
+    var verifyOptions = {
+      issuer: iss,
+      subject: sub,
+      audience: aud,
+      maxAge: exp,
+      algorithms: ["RS256"],
+    };
 
-    // jwt.verify(bearerToken, cert, { algorithms: ["HS256"] }, (err, result) => {
-    // jwt.verify(, cert, (err, result) => {
-    jwt.verify(
-      bearerHeader.split(" ")[1].toString(),
-      "my-secret",
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          res.sendStatus(403);
-        } else {
-          return next();
-        }
-      },
-    );
+    console.log("token", token);
+
+    jwt.verify(token, publicKey, verifyOptions, (err, result) => {
+      if (err) {
+        console.log(err);
+
+        res.status(403).send({
+          ok: false,
+          error: err,
+        });
+      } else {
+        console.log("\n Verified: " + JSON.stringify(result));
+        return next();
+      }
+    });
   } else {
     res.sendStatus(403);
   }

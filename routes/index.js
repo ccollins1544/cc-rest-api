@@ -1,6 +1,6 @@
-var express = require("express");
-var methods = require("../methods");
-var router = express.Router();
+const express = require("express");
+const methods = require("../methods");
+const router = express.Router();
 
 /* GET home page. */
 router.get("/", methods.ensureToken, (req, res, next) => {
