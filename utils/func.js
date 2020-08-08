@@ -1,7 +1,7 @@
 /**
  * ===============[ TABLE OF CONTENTS ]===============
  * 1. Functions
- *   1.1
+ *   1.1 generateKeys
  *   1.2 loopArrayObject
  *   1.3 loopObject
  *   1.4 listAll
