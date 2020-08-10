@@ -97,7 +97,7 @@ Now that you got the `utils` folder update your [app.js](app.js) to match mine e
 
 6. **Create Method for Verifying Token**
 
-Copy [methods.js](methods.js) to your root folder. If you made changes to the `signOptions` just make those same changes here too.
+The primary function of the `method.js` is to run `jwt.verify`. Copy [methods.js](methods.js) to your root folder. If you made changes to the `signOptions` just make those same changes here too. You'll noticed we use the privateKey to `jwt.sign` the token and the publicKey to `jwt.verify` the token.
 
 **NOTE**: The console.log
 
