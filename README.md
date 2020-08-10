@@ -72,7 +72,11 @@ JWT uses ISSUER, SUBJECT, AUDIENCE, MAX_AGE, and EXPIRATION. The expiration and 
 
 **[OPTIONAL]** Create another file `.env.override` identical to `.env` but only if you plan to test different values like a different username/password. Because sometimes the app doesn't refresh the new values when I change them so I use `.env.override` to force updates. If you are going to use `.env.override` make sure to keep it identical to `.env`.
 
-### 4. **Update Login Route to Generate a Token**
+### 4. **Update Your Package.json Dependencies**
+
+Update your `package.json` with the same dependencies I'm using in my [package.json](package.json)
+
+### 5. **Update Login Route to Generate a Token**
 
 Copy [login.js](routes/login.js) to your **routes** folder.
 You're welcome to modify the `signOptions` to whatever you want.
@@ -89,13 +93,13 @@ var signOptions = {
 
 The primary function of the `/login` route is to run `jwt.sign` and generate a token. Notice how this depends on a file `private.pem` so lets create publicKey and privateKey next.
 
-### 5. **Generate Public and Private Keys**
+### 6. **Generate Public and Private Keys**
 
 You can simply just copy the files in `utils` folder. This step is really important because if you don't have these keys generated in the correct format the algorithm `RS256` will not work and it's not obvious why.
 
 Now that you got the `utils` folder update your [app.js](app.js) to match mine exactly. Well maybe not exactly, pay attention to what view engine you're using and update accordingly. You'll notice how the keys are generated with `utils.generateKeys();`
 
-### 6. **Create Method for Verifying Token**
+### 7. **Create Method for Verifying Token**
 
 The primary function of the `method.js` is to run `jwt.verify`. Copy [methods.js](methods.js) to your root folder. If you made changes to the `signOptions` just make those same changes here too. You'll noticed we use the privateKey to `jwt.sign` the token and the publicKey to `jwt.verify` the token.
 
@@ -113,7 +117,7 @@ Verified: {"username":"ccollins","iat":1597091851,"exp":1597091861,"aud":"https:
 
 where `iat` stands for issued at and `exp` is when the token expires. These values are epoch time values and you can see that this example they are only different by 10 which means the token expires in 10 seconds. You can keep this console here for reference or remove it.
 
-### 7. **Secure A Route**
+### 8. **Secure A Route**
 
 Now you can finally secure a route with a token simply by using the `method.ensureToken` in any of your routes. For example notice what I did with the [index route](routes/index.js) under routes/index.js.
 
@@ -144,7 +148,7 @@ router.get("/", methods.ensureToken, (req, res, next) => {
 
 and that will require a valid token to view the route. Also be mindful that the token does expire based on the limit set in your variables `EXPIRATION` and `MAX_AGE`. You can do this with any of your routes to secure them.
 
-### 8. **Test Your Routes**
+### 9. **Test Your Routes**
 
 - a. Run the app with `DEBUG=cc-rest-api:* nodemon` or `DEBUG=cc-rest-api:* npm start`. If didn't clone this repo then change `cc-rest-api` to whatever your app name is.
 
