@@ -174,6 +174,6 @@ and that will require a valid token to view the route. Also be mindful that the 
 
   **That's it!** You can remove all the `console.logs` if you would like to clean it up a bit.
 
-### 🏆 Credit
+## 🏆 Credit
 
 - [Christopher Collins](https://ccollins.io)
