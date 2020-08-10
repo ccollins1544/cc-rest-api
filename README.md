@@ -77,7 +77,7 @@ JWT uses ISSUER, SUBJECT, AUDIENCE, MAX_AGE, and EXPIRATION. The expiration and 
 Copy [login.js](routes/login.js) to your **routes** folder.
 You're welcome to modify the `signOptions` to whatever you want.
 
-```shell
+```javascript
 var signOptions = {
   issuer: iss,
   subject: sub,
@@ -101,13 +101,13 @@ The primary function of the `method.js` is to run `jwt.verify`. Copy [methods.js
 
 **NOTE**: The console.log
 
-```shell
+```javascript
 console.log("\n Verified: " + JSON.stringify(result));
 ```
 
 output would be something like,
 
-```shell
+```javascript
 Verified: {"username":"ccollins","iat":1597091851,"exp":1597091861,"aud":"https://ccollins.io","iss":"christopher","sub":"chris@ccollins.io"}
 ```
 
@@ -117,7 +117,7 @@ where `iat` stands for issued at and `exp` is when the token expires. These valu
 
 Now you can finally secure a route with a token simply by using the `method.ensureToken` in any of your routes. For example notice what I did with the [index route](routes/index.js) under routes/index.js.
 
-```shell
+```javascript
 const express = require("express");
 const methods = require("../methods");
 const router = express.Router();
@@ -132,13 +132,13 @@ module.exports = router;
 
 **To secure any route just changed the line**
 
-```shell
+```javascript
 router.get("/", (req, res, next) => {
 ```
 
 **to**
 
-```shell
+```javascript
 router.get("/", methods.ensureToken, (req, res, next) => {
 ```
 
@@ -150,7 +150,7 @@ and that will require a valid token to view the route. Also be mindful that the 
 
 - b. I use [postman](https://www.postman.com) to test my routes. First, try getting a token by creating a POST route to `http://localhost:3000/login` with body **raw json** as
 
-```shell
+```javascript
 {
     "username": "your_username",
     "password": "your_password"
@@ -159,7 +159,7 @@ and that will require a valid token to view the route. Also be mindful that the 
 
 Test sending it. If you got a token in the response
 
-```shell
+```javascript
 {
     "ok": true,
     "message": "Login successful",
