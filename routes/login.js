@@ -8,9 +8,6 @@ const jwt = require("jsonwebtoken");
 let username = process.env.USERNAME || "ccollins";
 let password = process.env.PASSWORD || "123456";
 
-console.log("username:", process.env.USERNAME);
-console.log("password:", process.env.PASSWORD);
-
 router.post("/", (req, res, next) => {
   let p_username = req.body.username;
   let p_password = req.body.password;

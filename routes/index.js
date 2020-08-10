@@ -4,6 +4,7 @@ const router = express.Router();
 
 /* GET home page. */
 router.get("/", methods.ensureToken, (req, res, next) => {
+  // router.get("/", (req, res, next) => {
   res.render("index", { title: "Express" });
 });
 
