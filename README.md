@@ -2,13 +2,13 @@
 
 This app is a template created with **[express-generator](https://expressjs.com/en/starter/generator.html)** and uses [jsonwebtoken (jwt)](https://www.npmjs.com/package/jsonwebtoken) to create secure api endpoints.
 
-## Available Scripts
+## 💫 Available Scripts
 
 In the project directory, you can run:
 
-### `DEBUG=cc-rest-api:* nodemon`
+## `DEBUG=cc-rest-api:* nodemon`
 
-### `DEBUG=cc-rest-api:* npm start`
+## `DEBUG=cc-rest-api:* npm start`
 
 Runs the app.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -150,30 +150,30 @@ and that will require a valid token to view the route. Also be mindful that the 
 
 - b. I use [postman](https://www.postman.com) to test my routes. First, try getting a token by creating a POST route to `http://localhost:3000/login` with body **raw json** as
 
-```javascript
-{
-    "username": "your_username",
-    "password": "your_password"
-}
-```
+  ```javascript
+  {
+      "username": "your_username",
+      "password": "your_password"
+  }
+  ```
 
-Test sending it. If you got a token in the response
+  Test sending it. If you got a token in the response
 
-```javascript
-{
-    "ok": true,
-    "message": "Login successful",
-    "username": "your_username",
-    "token": "eyJhbGciOi....."
-}
-```
+  ```javascript
+  {
+      "ok": true,
+      "message": "Login successful",
+      "username": "your_username",
+      "token": "eyJhbGciOi....."
+  }
+  ```
 
-Then you're good to move to the next step.
+  Then you're good to move to the next step.
 
 - c. Copy the token generated from the previous step and create a GET route to `http://localhost:3000/`. Set the Authorization Type > Bearer Token and paste the token value. Send it! If you're response is the the index view in HTML then that means everything worked! If not you might see and error message that should provide information on what the problem is.
 
-**That's it!** You can remove all the `console.logs` if you would like to clean it up a bit.
+  **That's it!** You can remove all the `console.logs` if you would like to clean it up a bit.
 
-### Credit
+### 🏆 Credit
 
 - [Christopher Collins](https://ccollins.io)
