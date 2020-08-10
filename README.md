@@ -1,6 +1,6 @@
 # CC REST API
 
-This app is a template created with **(express-generator)[https://expressjs.com/en/starter/generator.html]** and uses [jsonwebtoken (jwt)](https://www.npmjs.com/package/jsonwebtoken) to create secure api endpoints.
+This app is a template created with **[express-generator](https://expressjs.com/en/starter/generator.html)** and uses [jsonwebtoken (jwt)](https://www.npmjs.com/package/jsonwebtoken) to create secure api endpoints.
 
 ## Available Scripts
 
@@ -15,7 +15,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## 🚀 Quick start
 
-This app was created using **(express-generator)[https://expressjs.com/en/starter/generator.html]** tool. If you would like to use any of the code in this repository I recommend running the express generator tool to get the base files and then you can easily see what files I've changed and make your own updates as needed.
+This app was created using **[express-generator](https://expressjs.com/en/starter/generator.html)** tool. If you would like to use any of the code in this repository I recommend running the express generator tool to get the base files and then you can easily see what files I've changed and make your own updates as needed.
 
 1. **Install Express Generator** (optional)
 
