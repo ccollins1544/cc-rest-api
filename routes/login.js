@@ -45,12 +45,19 @@ router.post("/", (req, res, next) => {
 
       if (err) {
         console.log(err);
+        req.session.token = null;
+        req.session.login = false;
+        req.session.username = null;
 
         res.status(500).send({
           ok: false,
           error: err,
         });
       } else {
+        req.session.token = token;
+        req.session.login = true;
+        req.session.username = username;
+
         res.status(200).send({
           ok: true,
           message: "Login successful",
@@ -69,7 +76,20 @@ router.post("/", (req, res, next) => {
 
 // GET /login
 router.get("/", (req, res, next) => {
-  res.render("login", { title: "Login" });
+  if (req.session.token !== "undefined" || req.session.token !== null) {
+    console.log("TOKEN", req.session.token);
+  }
+
+  let jadeProps = {
+    site_title: "CC REST API",
+    page_title: "Login",
+    login: req.session.login,
+    username: req.session.username,
+    iat: req.session.iat,
+    exp: req.session.exp,
+  };
+
+  res.render("login", jadeProps);
 });
 
 module.exports = router;

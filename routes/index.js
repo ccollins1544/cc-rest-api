@@ -4,8 +4,16 @@ const router = express.Router();
 
 // GET home page.
 router.get("/", methods.ensureToken, (req, res, next) => {
-  // router.get("/", (req, res, next) => {
-  res.render("index", { title: "Express" });
+  let jadeProps = {
+    site_title: "CC REST API",
+    page_title: "Home",
+    login: req.session.login,
+    username: req.session.username,
+    iat: req.session.iat,
+    exp: req.session.exp,
+  };
+
+  res.render("index", jadeProps);
 });
 
 module.exports = router;

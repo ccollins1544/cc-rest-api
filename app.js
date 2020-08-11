@@ -14,6 +14,7 @@ for (var k in envConfig) {
 
 const createError = require("http-errors");
 const express = require("express");
+const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
@@ -32,6 +33,32 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// We need to use sessions to keep track of our user's login status
+let cookieExpirationTime = new Date();
+let time = cookieExpirationTime.getTime();
+let seconds = process.env.EXPIRATION || 3600;
+
+console.log("time", time);
+
+time += seconds * 1000; // convert seconds to milliseconds
+cookieExpirationTime.setTime(time);
+
+console.log("cookieExpirationTime", cookieExpirationTime);
+console.log(cookieExpirationTime.toUTCString());
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "SuperSecretSession",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      expires: cookieExpirationTime,
+    },
+  }),
+);
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
   "/jquery",

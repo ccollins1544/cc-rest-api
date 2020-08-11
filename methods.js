@@ -4,8 +4,14 @@ const jwt = require("jsonwebtoken");
 module.exports.ensureToken = function (req, res, next) {
   var bearerHeader = req.headers["authorization"];
 
+  let token = "";
   if (typeof bearerHeader !== "undefined") {
-    let token = bearerHeader.split(" ")[1].toString();
+    token = bearerHeader.split(" ")[1].toString();
+  } else if (req.session.token !== "undefined") {
+    token = req.session.token;
+  }
+
+  if (token) {
     let publicKey = fs.readFileSync("public.pem", "utf8");
 
     var iss = process.env.ISSUER || "christopher";
@@ -26,6 +32,9 @@ module.exports.ensureToken = function (req, res, next) {
     jwt.verify(token, publicKey, verifyOptions, (err, result) => {
       if (err) {
         console.log(err);
+        req.session.token = null;
+        req.session.login = false;
+        req.session.username = null;
 
         res.status(403).send({
           ok: false,
@@ -33,6 +42,14 @@ module.exports.ensureToken = function (req, res, next) {
         });
       } else {
         console.log("\n Verified: " + JSON.stringify(result));
+        req.session.login = true;
+        req.session.username = result.username;
+        req.session.iat = result.iat;
+        req.session.exp = result.exp;
+        req.session.aud = result.aud;
+        req.session.iss = result.iss;
+        req.session.sub = result.sub;
+
         return next();
       }
     });

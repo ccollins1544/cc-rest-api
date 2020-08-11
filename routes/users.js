@@ -4,8 +4,17 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get("/", methods.ensureToken, (req, res, next) => {
+  let jadeProps = {
+    site_title: "CC REST API",
+    page_title: "Users",
+    login: req.session.login,
+    username: req.session.username,
+    iat: req.session.iat,
+    exp: req.session.exp,
+  };
+
   res.render("users", {
-    title: "Express | Users",
+    ...jadeProps,
     users: { 1: "Mike", 2: "Lucas", 3: "Dustin" },
   });
 });
