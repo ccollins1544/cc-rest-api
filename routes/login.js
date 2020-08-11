@@ -38,8 +38,6 @@ router.post("/", (req, res, next) => {
       algorithm: "RS256",
     };
 
-    // payload.exp = Math.floor(Date.now() / 1000) + 60 * 1;
-
     jwt.sign(payload, privateKey, signOptions, (err, token) => {
       console.log("token", token);
 

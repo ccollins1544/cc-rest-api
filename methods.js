@@ -28,7 +28,6 @@ module.exports.ensureToken = function (req, res, next) {
     };
 
     console.log("token", token);
-
     jwt.verify(token, publicKey, verifyOptions, (err, result) => {
       if (err) {
         console.log(err);
