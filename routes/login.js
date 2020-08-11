@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 let username = process.env.USERNAME || "ccollins";
 let password = process.env.PASSWORD || "123456";
 
+// POST /login
 router.post("/", (req, res, next) => {
   let p_username = req.body.username;
   let p_password = req.body.password;
@@ -64,6 +65,11 @@ router.post("/", (req, res, next) => {
       message: "Username or password incorrect",
     });
   }
+});
+
+// GET /login
+router.get("/", (req, res, next) => {
+  res.render("login", { title: "Login" });
 });
 
 module.exports = router;

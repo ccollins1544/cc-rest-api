@@ -33,6 +33,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  "/jquery",
+  express.static(path.join(__dirname, "node_modules/jquery/")),
+);
+app.use(
+  "/bootstrap",
+  express.static(path.join(__dirname, "node_modules/bootstrap/")),
+);
 
 app.use(bodyParser.json());
 //configures body parser to parse JSON

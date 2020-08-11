@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bootstrap": "^4.5.2",
     "cli-table2": "^0.2.0",
     "colors": "^1.4.0",
     "cookie-parser": "~1.4.4",
@@ -14,8 +15,10 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "jquery": "^3.5.1",
     "jsonwebtoken": "^8.5.1",
     "morgan": "~1.9.1",
-    "node-rsa": "^1.1.1"
+    "node-rsa": "^1.1.1",
+    "pug": "^3.0.0"
   }
 }
