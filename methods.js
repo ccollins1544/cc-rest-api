@@ -28,35 +28,30 @@ module.exports.ensureToken = function (req, res, next) {
     };
 
     console.log("token", token);
-    jwt.verify(
-      token,
-      { publicKey, passphrase: "" },
-      verifyOptions,
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          req.session.token = null;
-          req.session.login = false;
-          req.session.username = null;
+    jwt.verify(token, publicKey, verifyOptions, (err, result) => {
+      if (err) {
+        console.log(err);
+        req.session.token = null;
+        req.session.login = false;
+        req.session.username = null;
 
-          res.status(403).send({
-            ok: false,
-            error: err,
-          });
-        } else {
-          console.log("\n Verified: " + JSON.stringify(result));
-          req.session.login = true;
-          req.session.username = result.username;
-          req.session.iat = result.iat;
-          req.session.exp = result.exp;
-          req.session.aud = result.aud;
-          req.session.iss = result.iss;
-          req.session.sub = result.sub;
+        res.status(403).send({
+          ok: false,
+          error: err,
+        });
+      } else {
+        console.log("\n Verified: " + JSON.stringify(result));
+        req.session.login = true;
+        req.session.username = result.username;
+        req.session.iat = result.iat;
+        req.session.exp = result.exp;
+        req.session.aud = result.aud;
+        req.session.iss = result.iss;
+        req.session.sub = result.sub;
 
-          return next();
-        }
-      },
-    );
+        return next();
+      }
+    });
   } else {
     res.sendStatus(403);
   }

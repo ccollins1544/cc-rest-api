@@ -40,7 +40,7 @@ router.post("/", (req, res, next) => {
 
     jwt.sign(
       payload,
-      { privateKey, passphrase: "" },
+      { key: privateKey, passphrase: "" },
       signOptions,
       (err, token) => {
         console.log("token", token);
