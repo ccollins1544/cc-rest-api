@@ -38,32 +38,37 @@ router.post("/", (req, res, next) => {
       algorithm: "RS256",
     };
 
-    jwt.sign(payload, privateKey, signOptions, (err, token) => {
-      console.log("token", token);
+    jwt.sign(
+      payload,
+      { privateKey, passphrase: "" },
+      signOptions,
+      (err, token) => {
+        console.log("token", token);
 
-      if (err) {
-        console.log(err);
-        req.session.token = null;
-        req.session.login = false;
-        req.session.username = null;
+        if (err) {
+          console.log(err);
+          req.session.token = null;
+          req.session.login = false;
+          req.session.username = null;
 
-        res.status(500).send({
-          ok: false,
-          error: err,
-        });
-      } else {
-        req.session.token = token;
-        req.session.login = true;
-        req.session.username = username;
+          res.status(500).send({
+            ok: false,
+            error: err,
+          });
+        } else {
+          req.session.token = token;
+          req.session.login = true;
+          req.session.username = username;
 
-        res.status(200).send({
-          ok: true,
-          message: "Login successful",
-          username: username,
-          token: token,
-        });
-      }
-    });
+          res.status(200).send({
+            ok: true,
+            message: "Login successful",
+            username: username,
+            token: token,
+          });
+        }
+      },
+    );
   } else {
     res.status(401).send({
       ok: false,
