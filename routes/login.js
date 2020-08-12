@@ -5,7 +5,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 
 // Test Credentials
-let username = process.env.USERNAME || "ccollins";
+let username = process.env.USERNAME || "demo";
 let password = process.env.PASSWORD || "123456";
 
 // POST /login
