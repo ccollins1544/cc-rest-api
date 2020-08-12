@@ -38,13 +38,8 @@ let cookieExpirationTime = new Date();
 let time = cookieExpirationTime.getTime();
 let seconds = process.env.EXPIRATION || 3600;
 
-console.log("time", time);
-
 time += seconds * 1000; // convert seconds to milliseconds
 cookieExpirationTime.setTime(time);
-
-console.log("cookieExpirationTime", cookieExpirationTime);
-console.log(cookieExpirationTime.toUTCString());
 
 app.use(
   session({

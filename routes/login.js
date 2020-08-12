@@ -43,8 +43,6 @@ router.post("/", (req, res, next) => {
       { key: privateKey, passphrase: "" },
       signOptions,
       (err, token) => {
-        console.log("token", token);
-
         if (err) {
           console.log(err);
           req.session.token = null;
@@ -79,10 +77,6 @@ router.post("/", (req, res, next) => {
 
 // GET /login
 router.get("/", (req, res, next) => {
-  if (req.session.token !== "undefined" || req.session.token !== null) {
-    console.log("TOKEN", req.session.token);
-  }
-
   let jadeProps = {
     site_title: "CC REST API",
     page_title: "Login",

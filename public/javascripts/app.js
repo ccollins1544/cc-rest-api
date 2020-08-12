@@ -85,7 +85,6 @@ $(function () {
   $("#login-form").on("submit", function (e) {
     e.preventDefault();
     var data = getFormData(e.target.id);
-    console.log(data);
 
     $.ajax({
       url: "/login",
@@ -94,7 +93,6 @@ $(function () {
       dataType: "json",
       timeout: 5000,
       success: function (response) {
-        console.log("posted response", response);
         if (response.ok) {
           AlertMessage(response.message, "success");
           window.location.href = "/";
@@ -103,9 +101,9 @@ $(function () {
         }
       },
       error: function (request, error) {
-        console.log("request", request);
-        console.log("responseText", JSON.parse(request.responseText));
-        console.log("error", error);
+        // console.log("request", request);
+        // console.log("responseText", JSON.parse(request.responseText));
+        // console.log("error", error);
 
         let responseText = JSON.parse(request.responseText);
         let ErrorMessage =
@@ -131,7 +129,6 @@ $(function () {
       url: "/logout",
       method: "DELETE",
       success: function (response) {
-        console.log("delete response", response);
         if (response.ok) {
           AlertMessage(response.message, "success");
           window.location.href = "/login";
@@ -140,9 +137,9 @@ $(function () {
         }
       },
       error: function (request, error) {
-        console.log("request", request);
-        console.log("responseText", JSON.parse(request.responseText));
-        console.log("error", error);
+        // console.log("request", request);
+        // console.log("responseText", JSON.parse(request.responseText));
+        // console.log("error", error);
 
         let responseText = JSON.parse(request.responseText);
         let ErrorMessage =

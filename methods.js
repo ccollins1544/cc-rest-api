@@ -27,7 +27,6 @@ module.exports.ensureToken = function (req, res, next) {
       algorithms: ["RS256"],
     };
 
-    console.log("token", token);
     jwt.verify(token, publicKey, verifyOptions, (err, result) => {
       if (err) {
         console.log(err);
