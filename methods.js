@@ -53,6 +53,7 @@ module.exports.ensureToken = function (req, res, next) {
       }
     });
   } else {
-    res.sendStatus(403);
+    // res.sendStatus(403);
+    res.redirect("/login");
   }
 };

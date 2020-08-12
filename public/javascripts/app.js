@@ -123,4 +123,41 @@ $(function () {
       },
     });
   });
+
+  $("#logout").on("click", function (e) {
+    e.preventDefault();
+
+    $.ajax({
+      url: "/logout",
+      method: "DELETE",
+      success: function (response) {
+        console.log("delete response", response);
+        if (response.ok) {
+          AlertMessage(response.message, "success");
+          window.location.href = "/login";
+        } else {
+          AlertMessage(response.message, "danger");
+        }
+      },
+      error: function (request, error) {
+        console.log("request", request);
+        console.log("responseText", JSON.parse(request.responseText));
+        console.log("error", error);
+
+        let responseText = JSON.parse(request.responseText);
+        let ErrorMessage =
+          "Error: " + request.status + ", " + request.statusText;
+        ErrorMessage += responseText.hasOwnProperty("message")
+          ? " " + responseText.message
+          : "";
+
+        if (request.status === 200) {
+          AlertMessage(ErrorMessage, "success");
+          window.location.href = "/login";
+        } else {
+          AlertMessage(ErrorMessage, "danger");
+        }
+      },
+    });
+  });
 });
