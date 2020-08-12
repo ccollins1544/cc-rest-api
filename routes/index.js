@@ -13,7 +13,7 @@ router.use("/logout", logoutRouter);
 router.use("/api", api_routes);
 
 // GET home page.
-router.get("/", methods.ensureToken, (req, res, next) => {
+router.get("/", methods.validateAccessToken, (req, res, next) => {
   let jadeProps = {
     site_title: "CC REST API",
     page_title: "Home",

@@ -3,7 +3,7 @@ const methods = require("../methods");
 const router = express.Router();
 
 /* GET users listing. */
-router.get("/", methods.ensureToken, (req, res, next) => {
+router.get("/", methods.validateAccessToken, (req, res, next) => {
   let jadeProps = {
     site_title: "CC REST API",
     page_title: "Users",

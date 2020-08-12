@@ -1,56 +1,70 @@
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
-module.exports.ensureToken = function (req, res, next) {
-  var bearerHeader = req.headers["authorization"];
+module.exports.validateAccessToken = function (req, res, next) {
+  const { authorization } = req.headers;
 
+  // Pull token from header or session
   let token = "";
-  if (typeof bearerHeader !== "undefined") {
-    token = bearerHeader.split(" ")[1].toString();
+  if (typeof authorization !== "undefined") {
+    token = authorization.split(" ")[1].toString();
   } else if (req.session.token !== "undefined") {
     token = req.session.token;
   }
 
+  // Validate the token
   if (token) {
-    let publicKey = fs.readFileSync("public.pem", "utf8");
+    try {
+      let publicKey = fs.readFileSync("public.pem", "utf8");
+      let decodedToken = jwt.decode(token, { complete: true });
+      // console.log("token", token);
+      // console.log("decodedToken", JSON.stringify(decodedToken, null, 2));
 
-    var iss = process.env.ISSUER || "christopher";
-    var sub = process.env.SUBJECT || "chris@ccollins.io";
-    var aud = process.env.AUDIENCE || "https://ccollins.io";
-    var exp = process.env.EXPIRATION || "1h";
+      let { header, payload } = decodedToken;
+      let { alg } = header;
+      let { username, iat, exp, aud, iss, sub } = payload;
 
-    var verifyOptions = {
-      issuer: iss,
-      subject: sub,
-      audience: aud,
-      maxAge: exp,
-      algorithms: ["RS256"],
-    };
+      var verifyOptions = {
+        issuer: iss,
+        subject: sub,
+        audience: aud,
+        maxAge: exp,
+        algorithms: [alg],
+      };
 
-    jwt.verify(token, publicKey, verifyOptions, (err, result) => {
-      if (err) {
-        console.log(err);
-        req.session.token = null;
-        req.session.login = false;
-        req.session.username = null;
+      jwt.verify(token, publicKey, verifyOptions, (err, result) => {
+        if (err) {
+          console.log(err);
+          req.session.token = null;
+          req.session.login = false;
+          req.session.username = null;
 
-        res.status(403).send({
-          ok: false,
-          error: err,
-        });
-      } else {
-        console.log("\n Verified: " + JSON.stringify(result));
-        req.session.login = true;
-        req.session.username = result.username;
-        req.session.iat = result.iat;
-        req.session.exp = result.exp;
-        req.session.aud = result.aud;
-        req.session.iss = result.iss;
-        req.session.sub = result.sub;
+          res.status(403).send({
+            ok: false,
+            error: err,
+          });
+        } else {
+          // console.log("\n Verified: " + JSON.stringify(result, null, 2));
+          req.session.login = true;
+          req.session.username = result.username;
+          req.session.iat = result.iat;
+          req.session.exp = result.exp;
+          req.session.aud = result.aud;
+          req.session.iss = result.iss;
+          req.session.sub = result.sub;
 
-        return next();
-      }
-    });
+          return next();
+        }
+      });
+    } catch (err) {
+      console.log(err);
+      req.session.token = null;
+
+      res.status(403).send({
+        ok: false,
+        error: err,
+      });
+    }
   } else {
     // res.sendStatus(403);
     res.redirect("/login");
