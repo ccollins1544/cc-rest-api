@@ -3,6 +3,7 @@
  * 1. Functions
  *   1.1 AlertMessage()
  *   1.2 getFormData
+ *   1.3 startClock
  ******************************************************/
 /* ===============[ 1. FUNCTIONS ]====================*/
 /**
@@ -81,7 +82,33 @@ function getFormData(formID) {
   return formData;
 }
 
+/**
+ * 1.3 startClock
+ * Displays current time and continues counting the seconds.
+ * @param {string} divSelector - defaults to #clock
+ */
+var startClock = function (divSelector) {
+  divSelector = divSelector === undefined ? "#clock" : divSelector;
+  setInterval(function () {
+    $(divSelector).html(moment().format("MMMM D, YYYY hh:mm:ss A"));
+  }, 1000);
+}; // END startClock
+
 $(function () {
+  startClock();
+  let iat = moment(parseInt($("#iat").text())).format(
+    "MMMM D, YYYY hh:mm:ss A",
+  );
+  let exp = moment(parseInt($("#exp").text())).format(
+    "MMMM D, YYYY hh:mm:ss A",
+  );
+
+  console.log(iat);
+  console.log(exp);
+
+  // $("#iat").html(iat);
+  // $("#exp").html(exp);
+
   $("#login-form").on("submit", function (e) {
     e.preventDefault();
     var data = getFormData(e.target.id);

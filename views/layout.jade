@@ -16,7 +16,7 @@ html
     block header
       include includes/header
 
-    article.App#main-container
+    article.App.container#main-container
       div.section-block.row#main-section 
         block content
     
@@ -25,5 +25,6 @@ html
 
     script(src='/jquery/dist/jquery.min.js')
     script(src='/bootstrap/dist/js/bootstrap.min.js')
+    script(src='/moment/min/moment.min.js')
     script(src='/javascripts/app.js')
   

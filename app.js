@@ -63,6 +63,10 @@ app.use(
   "/bootstrap",
   express.static(path.join(__dirname, "node_modules/bootstrap/")),
 );
+app.use(
+  "/moment",
+  express.static(path.join(__dirname, "node_modules/moment/")),
+);
 
 app.use(bodyParser.json());
 //configures body parser to parse JSON

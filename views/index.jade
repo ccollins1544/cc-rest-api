@@ -1,21 +1,33 @@
 extends layout
 
 block content
-  div.container 
+  - var time_remaining = (exp - iat) / 60 
+  div.col-12 
     div.row.first-row
       h4.mx-auto= page_title 
     hr 
-    div.row 
+
+    div.row.section-block
+      div.card.bg-dark.col-12 
+        div.card-header.text-white.d-flex.justify-content-between 
+          div
+            i.fas.fa-user-lock 
+            span Welcome #{username}
+          div.clock#clock loading ... 
+        div.card-body.bg-dark
+          table.table.table-striped.table-dark
+            tbody
+              tr
+                td IssuedAt
+                td#iat #{iat}
+              tr
+                td Expires
+                td#exp #{exp}
+              tr
+                td Time Remaining
+                td #{time_remaining} minutes
+    
+    div.row.section-block
       div.col-12.col-md-12.mx-auto 
-        p Welcome #{username}
-        ul.list-group 
-          li.list-group-item.d-flex.justify-content-center.align-items-center.list-group-item-primary 
-            span Login: #{login}
-          li.list-group-item.d-flex.justify-content-center.align-items-center.list-group-item-secondary
-            span  IssuedAt: #{iat}
-          li.list-group-item.d-flex.justify-content-center.align-items-center.list-group-item-warning
-            span Expires: #{exp}
-          - var time_remaining = (exp - iat) / 60 
-          li.list-group-item.d-flex.justify-content-center.align-items-center.list-group-item-success
-            span Time Remaining: #{time_remaining} minutes
+
 
