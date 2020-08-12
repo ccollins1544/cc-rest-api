@@ -1,0 +1,29 @@
+block header 
+  header#main-header 
+    div.container-fluid.clearfix 
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark#main-nav
+      a.navbar-brand.mb-0.h1(href=".")
+        if fa_script 
+          i.fad.fa-laptop-code 
+        span.ml-2 #{site_title}
+        
+      div.collapse.navbar-collapse.show 
+        ul.navbar-nav.ml-auto 
+          if login
+            li.nav-item
+              if fa_script 
+                i.fas.fa-user-lock.mr-2
+              span Welcome #{username}!
+            li.nav-item 
+              a.nav-link#logout(href="/logout")
+                if fa_script
+                  i.fad.fa-sign-out-alt.fa-1x
+                else 
+                  span Logout 
+          else 
+            li.nav-item 
+            a.nav-link(href="/login")
+              if fa_script
+                i.fad.fa-sign-in-alt.fa-2x
+              else 
+                | Login 
