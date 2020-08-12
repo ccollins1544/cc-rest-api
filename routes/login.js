@@ -80,6 +80,8 @@ router.get("/", (req, res, next) => {
   let jadeProps = {
     site_title: "CC REST API",
     page_title: "Login",
+    slug: "login",
+    fa_script: process.env.FA_SCRIPT || false,
     login: req.session.login,
     username: req.session.username,
     iat: req.session.iat,

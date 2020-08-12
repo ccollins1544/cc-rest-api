@@ -4,6 +4,11 @@
  *   1.1 AlertMessage()
  *   1.2 getFormData
  *   1.3 startClock
+ *
+ * 2. Document Ready
+ *   2.1 Update Home Banner Date and Times
+ *   2.2 Login Form Submit
+ *   2.3 Logout Click
  ******************************************************/
 /* ===============[ 1. FUNCTIONS ]====================*/
 /**
@@ -94,21 +99,35 @@ var startClock = function (divSelector) {
   }, 1000);
 }; // END startClock
 
+/**
+ * 2. Document Ready
+ */
 $(function () {
   startClock();
-  let iat = moment(parseInt($("#iat").text())).format(
-    "MMMM D, YYYY hh:mm:ss A",
-  );
-  let exp = moment(parseInt($("#exp").text())).format(
-    "MMMM D, YYYY hh:mm:ss A",
-  );
 
-  console.log(iat);
-  console.log(exp);
+  // 2.1 Update Home Banner Date and Times
+  if ($("#home_page").length > 0) {
+    let iatEpoch = parseInt($("#iat").text());
+    let expEpoch = parseInt($("#exp").text());
 
-  // $("#iat").html(iat);
-  // $("#exp").html(exp);
+    // Countdown Timer
+    var diffTime = expEpoch - iatEpoch;
+    var duration = moment.duration(diffTime * 1000, "milliseconds");
+    var interval = 1000;
 
+    setInterval(function () {
+      duration = moment.duration(duration - interval, "milliseconds");
+      $("#time_remaining").text(
+        duration.hours() + ":" + duration.minutes() + ":" + duration.seconds(),
+      );
+    }, interval);
+
+    // Human Readable Dates
+    $("#iat").html(moment.unix(iatEpoch).format("MMMM, D, YYYY hh:mm:ss A"));
+    $("#exp").html(moment.unix(expEpoch).format("MMMM, D, YYYY hh:mm:ss A"));
+  }
+
+  // 2.2 Login Form Submit
   $("#login-form").on("submit", function (e) {
     e.preventDefault();
     var data = getFormData(e.target.id);
@@ -149,6 +168,7 @@ $(function () {
     });
   });
 
+  // 2.3 Logout Click
   $("#logout").on("click", function (e) {
     e.preventDefault();
 

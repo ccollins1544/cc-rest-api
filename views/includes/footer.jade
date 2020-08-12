@@ -5,13 +5,22 @@ block footer
         ul.navbar-nav 
           li.nav-item 
             a.nav-link(href="https://www.linkedin.com/in/ccollins1544/", target="_blank", rel="noopener noreferrer")
-              i.fab.fa-linkedin.fa-2x
+              if fa_script 
+                i.fab.fa-linkedin.fa-2x
+              else 
+                | LinkedIn
           li.nav-item 
             a.nav-link(href="https://dev.to/ccollins", target="_blank", rel="noopener noreferrer")
-              i.fab.fa-dev.fa-2x
+              if fa_script 
+                i.fab.fa-dev.fa-2x
+              else 
+                | DevTo
           li.nav-item 
             a.nav-link(href="https://ccollins1544.github.io/", target="_blank", rel="noopener noreferrer")
-              i.fab.fa-github.fa-2x
+              if fa_script 
+                i.fab.fa-github.fa-2x
+              else 
+                | GitHub
 
     div#footer-bottom   
       div#footer-info 
@@ -20,6 +29,7 @@ block footer
           | #{site_title}
         a.footer-link(href="https://github.com/ccollins1544/cc-rest-api", target="_blank" rel="noopener noreferrer")
           |  
-          i.fad.fa-brackets-curly
+          if fa_script 
+            i.fad.fa-brackets-curly
 
 

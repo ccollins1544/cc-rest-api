@@ -86,14 +86,14 @@ h6 {
 body.page-template {
   font-family: var(--header-font);
   color: var(--body-text);
-  height: calc(100vh - 117px);
+  min-height: calc(100vh - 118px);
   background-color: rgba(153, 170, 181, 0.3);
   /* background-image: url("/img/black_paper_800x800.png"); */
 }
 
 article#main-container {
   margin-top: 0px;
-  height: 100%;
+  min-height: calc(100vh - 118px);
 }
 
 article#main-container {
@@ -128,7 +128,7 @@ article#main-container {
   max-width: 1080px;
   min-height: calc(50vh - 79px);
   text-align: center;
-  font-size: xx-large;
+  font-size: 1rem;
   font-family: var(--body-font);
 }
 
@@ -141,7 +141,7 @@ article#main-container {
   max-width: 100%;
   min-height: calc(50vh - 100px);
   text-align: center;
-  font-size: xx-large;
+  font-size: 1rem;
   font-family: var(--body-font);
 }
 
@@ -450,16 +450,17 @@ img {
 
 #main-nav,
 #mobile-nav {
-  padding: 0.85rem 1rem;
+  padding: 1rem;
   max-width: 100%;
   margin: 0 auto;
   background-color: var(--primary-menu-background) !important;
 }
 
-#main-nav .navbar-nav .nav-link,
-#mobile-nav .navbar-nav .nav-link {
-  font-size: 1em;
+#main-nav .navbar-nav .nav-item,
+#mobile-nav .navbar-nav .nav-item {
+  font-size: 1.25rem;
   cursor: pointer;
+  padding: 0px 0.25rem;
   color: var(--primary-menu-text);
 }
 
@@ -477,6 +478,11 @@ img {
   color: var(--accent-text);
 }
 
+#main-nav .nav-link,
+#mobile-nav .nav-link {
+  padding: 0px;
+}
+
 /* Focused or Hover Nav Link */
 #main-nav .navbar-nav .nav-link:hover,
 #mobile-nav .navbar-nav .nav-link:hover {
@@ -488,7 +494,7 @@ img {
   position: absolute;
   top: 0;
   left: 0;
-  padding: 1rem;
+  padding: 0.8rem;
   font-size: 1.25rem;
   font-family: var(--header-font);
   background-color: var(--primary-menu-background);
@@ -636,11 +642,10 @@ img {
 
 /* 3.2 Comment Section (#comment-section)
 /*------------------------------------------------------*/
-section.section-block,
-article#main-container {
+section.section-block {
   background-color: transparent;
   box-shadow: none;
-  height: 100%;
+  min-height: calc(100vh - 118px);
 }
 
 section#comment-section.jumbotron {
@@ -654,6 +659,10 @@ section#comment-section.jumbotron {
 
 /* 3.3 Main Section
 /*------------------------------------------------------*/
+#login_page #main-section>div {
+  max-width: 400px;
+}
+
 #main-section {
   height: auto;
 }
@@ -718,8 +727,7 @@ section#comment-section.jumbotron {
   font-family: var(--header-font);
   display: flex;
   flex-flow: column;
-  height: 50px;
-  /* 83px; */
+  height: 52px;
 }
 
 /* Footer Links */
@@ -750,7 +758,7 @@ section#comment-section.jumbotron {
 }
 
 #footer-nav .nav-link {
-  color: var(--button-text);
+  color: var(--secondary-menu-text);
 }
 
 .fa-linkedin:hover {

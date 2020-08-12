@@ -7,19 +7,24 @@ html
     meta(name='description', content="Example REST API")
 
     link(rel='stylesheet', href="https://fonts.googleapis.com/css?family=Montserrat|Press+Start+2P|Ubuntu&display=swap")
-    script(src="https://kit.fontawesome.com/fece22d596.js")
+    if fa_script 
+      script(src="#{fa_script}")
 
     link(rel='stylesheet' href='/bootstrap/dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
 
-  body.page-template.App
+  body.page-template.App(id="#{slug}_page")
     block header
       include includes/header
 
     article.App.container#main-container
-      div.section-block.row#main-section 
-        block content
-    
+      if fa_script 
+        div.section-block.row#main-section
+          block content
+      else 
+        div.section-block.row#main-section.mt-2
+          block content
+          
     block footer
       include includes/footer
 
