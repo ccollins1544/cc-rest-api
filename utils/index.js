@@ -3,7 +3,6 @@
 const fs = require("fs");
 const path = require("path");
 let basename = path.basename(module.filename);
-let env = process.env.NODE_ENV || "development";
 let utils = {};
 
 fs.readdirSync(__dirname)
