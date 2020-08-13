@@ -68,7 +68,10 @@ module.exports.validateAccessToken = function (req, res, next) {
       });
     }
   } else {
-    // res.sendStatus(403);
-    res.redirect("/login");
+    if (req.originalUrl === "/") {
+      res.redirect("/login");
+    } else {
+      res.sendStatus(403);
+    }
   }
 };
