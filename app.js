@@ -36,9 +36,9 @@ app.use(cookieParser());
 // We need to use sessions to keep track of our user's login status
 let cookieExpirationTime = new Date();
 let time = cookieExpirationTime.getTime();
-let seconds = process.env.EXPIRATION || 3600;
+let seconds = 3600; // 1 hour
 
-time += seconds * 1000; // convert seconds to milliseconds
+time += process.env.EXPIRATION || seconds * 1000; // convert seconds to milliseconds
 cookieExpirationTime.setTime(time);
 
 app.use(
