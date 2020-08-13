@@ -1,6 +1,6 @@
 # CC REST API
 
-This app is a template created with **[express-generator](https://expressjs.com/en/starter/generator.html)** and uses [jsonwebtoken (jwt)](https://www.npmjs.com/package/jsonwebtoken) to create secure api endpoints.
+This app is a template created with **[express-generator](https://expressjs.com/en/starter/generator.html)** and uses [jsonwebtoken (jwt)](https://www.npmjs.com/package/jsonwebtoken) to create tokens with private and public keys. The JWT token can then be used in the headers as an `Authorization bearer` to gain access to secure api endpoints.
 
 ## 💫 Deploy
 
