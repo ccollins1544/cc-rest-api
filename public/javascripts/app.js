@@ -6,9 +6,15 @@
  *   1.3 startClock
  *
  * 2. Document Ready
- *   2.1 Update Home Banner Date and Times
- *   2.2 Login Form Submit
- *   2.3 Logout Click
+ *   2.1 Update Home Page Content
+ *     2.1.1 Banner Date and Times
+ *     2.1.2 Save Local Storage payload and token
+ *
+ *   2.2 Update Login Page Content
+ *     2.2.1 Retrieve Local Storage payload and token
+ *
+ *   2.3 Login Form Submit
+ *   2.4 Logout Click
  ******************************************************/
 /* ===============[ 1. FUNCTIONS ]====================*/
 /**
@@ -52,7 +58,7 @@ function AlertMessage(message = "", addThisClass = "info", appendAfterElement) {
   alertElement.html(message);
 
   if (appendAfterElement === undefined) {
-    appendAfterElement = $("#main-section");
+    appendAfterElement = $("#main-container");
   }
 
   appendAfterElement.prepend(alertElement);
@@ -105,13 +111,15 @@ var startClock = function (divSelector) {
 $(function () {
   startClock();
 
-  // 2.1 Update Home Banner Date and Times
   if ($("#home_page").length > 0) {
+    // 2.1 Update Home Page Content
+    // 2.1.1 Banner Date and Times
     let iatEpoch = parseInt($("#iat").text());
     let expEpoch = parseInt($("#exp").text());
+    let nowEpoch = moment().unix();
 
     // Countdown Timer
-    var diffTime = expEpoch - iatEpoch;
+    var diffTime = expEpoch - nowEpoch;
     var duration = moment.duration(diffTime * 1000, "milliseconds");
     var interval = 1000;
 
@@ -120,11 +128,108 @@ $(function () {
       $("#time_remaining").text(
         duration.hours() + ":" + duration.minutes() + ":" + duration.seconds(),
       );
+
+      let target_parent = $("#time_remaining").closest("li");
+      let primary_class = target_parent.hasClass("list-group-item-primary");
+      let warning_class = target_parent.hasClass("list-group-item-warning");
+      let danger_class = target_parent.hasClass("list-group-item-danger");
+
+      if (duration.minutes() < 10 && danger_class === false) {
+        if (primary_class) {
+          target_parent.removeClass("list-group-item-primary");
+        } else if (warning_class) {
+          target_parent.removeClass("list-group-item-warning");
+        }
+        target_parent.addClass("list-group-item-danger");
+      } else if (duration.minutes() < 15 && warning_class === false) {
+        if (primary_class) {
+          target_parent.removeClass("list-group-item-primary");
+        } else if (danger_class) {
+          target_parent.removeClass("list-group-item-danger");
+        }
+        target_parent.addClass("list-group-item-warning");
+      } else if (duration.minutes() > 15 && primary_class === false) {
+        if (warning_class) {
+          target_parent.removeClass("list-group-item-warning");
+        } else if (danger_class) {
+          target_parent.removeClass("list-group-item-danger");
+        }
+        target_parent.addClass("list-group-item-primary");
+      }
     }, interval);
 
     // Human Readable Dates
     $("#iat").html(moment.unix(iatEpoch).format("MMMM, D, YYYY hh:mm:ss A"));
     $("#exp").html(moment.unix(expEpoch).format("MMMM, D, YYYY hh:mm:ss A"));
+
+    // 2.1.2 Save Local Storage payload and token
+    let payload = $("#main-footer").data("payload");
+    let token = $("#main-footer").data("token");
+
+    if (Object.keys(payload).length > 0) {
+      localStorage.setItem("cc_rest_api_payload", JSON.stringify(payload));
+    }
+
+    if (token.trim() !== "") {
+      localStorage.setItem("cc_rest_api_token", token);
+    }
+  } else if ($("#login_page").length > 0) {
+    // 2.2 Update Login Page Content
+    // 2.2.1 Retrieve Local Storage payload and token
+    let payload =
+      localStorage.getItem("cc_rest_api_payload") !== null
+        ? localStorage.getItem("cc_rest_api_payload")
+        : "{}";
+    payload = JSON.parse(payload);
+
+    let token =
+      localStorage.getItem("cc_rest_api_token") !== null
+        ? localStorage.getItem("cc_rest_api_token")
+        : "";
+
+    // Check if token has expired
+    if (payload.hasOwnProperty("exp") && token !== "") {
+      let remaining_time = payload.exp - moment().unix();
+      if (remaining_time > 0) {
+        $.ajax({
+          url: "/",
+          type: "GET",
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer " + token);
+          },
+          success: function () {
+            remaining_time = Math.round(remaining_time / 60);
+            AlertMessage(
+              "Local Storage Token is still valid for " +
+                remaining_time +
+                " minutes!",
+              "success",
+            );
+
+            let card_body = $("<button>").addClass("btn btn-dark").text("Home");
+            card_body = $("<a>").attr("href", "/").append(card_body);
+            $("#login-form").replaceWith(card_body);
+          },
+          error: function (request, error) {
+            let { status, statusText, responseText, data } = request;
+            let ErrorMessage = "Error: " + status + ", " + statusText;
+            ErrorMessage = +(responseText !== null && responseText !== "")
+              ? "<br />" + responseText
+              : "";
+            ErrorMessage = +(data !== null && Object.keys(data).length > 0)
+              ? "<br /><pre>" + JSON.stringify(data, null, 2) + "</pre>"
+              : "";
+            AlertMessage(ErrorMessage, "danger");
+          },
+        });
+      } else {
+        remaining_time = Math.abs(Math.round(remaining_time / 60));
+        AlertMessage(
+          "Local Storage Token has expired " + remaining_time + " minutes ago.",
+          "danger",
+        );
+      }
+    }
   }
 
   // 2.2 Login Form Submit
@@ -184,10 +289,6 @@ $(function () {
         }
       },
       error: function (request, error) {
-        // console.log("request", request);
-        // console.log("responseText", JSON.parse(request.responseText));
-        // console.log("error", error);
-
         let responseText = JSON.parse(request.responseText);
         let ErrorMessage =
           "Error: " + request.status + ", " + request.statusText;

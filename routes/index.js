@@ -21,6 +21,8 @@ router.get("/", methods.validateAccessToken, (req, res, next) => {
     username: req.session.username,
     iat: req.session.iat,
     exp: req.session.exp,
+    token: res.locals.token,
+    payload: res.locals.payload,
   };
 
   res.render("index", jadeProps);

@@ -1,5 +1,5 @@
 block footer 
-  footer#main-footer
+  footer#main-footer(data-payload=(payload ? JSON.stringify(payload) : "{}"), data-token=(token ? token : " "))
     nav.navbar.navbar-expand-lg.navbar-dark.bg-dark#footer-nav
       div.navbar-collapse 
         ul.navbar-nav 

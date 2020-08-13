@@ -23,7 +23,7 @@ router.post("/", (req, res, next) => {
       username: username,
     };
 
-    console.log("Payload: " + JSON.stringify(payload, null, 2));
+    // console.log("Payload: " + JSON.stringify(payload, null, 2));
 
     var iss = process.env.ISSUER || "christopher";
     var sub = process.env.SUBJECT || "chris@ccollins.io";
