@@ -141,7 +141,11 @@ $(function () {
           target_parent.removeClass("list-group-item-warning");
         }
         target_parent.addClass("list-group-item-danger");
-      } else if (duration.minutes() < 15 && warning_class === false) {
+      } else if (
+        duration.minutes() < 15 &&
+        duration.minutes() > 10 &&
+        warning_class === false
+      ) {
         if (primary_class) {
           target_parent.removeClass("list-group-item-primary");
         } else if (danger_class) {
