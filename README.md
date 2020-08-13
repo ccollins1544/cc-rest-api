@@ -45,7 +45,7 @@ SESSION_SECRET=secret-goes-here
 FA_SCRIPT=
 ```
 
-**NOTE:** You can set these values to whatever you want. The expiration value `3600000` represents 1 hour in milliseconds (60min - 60sec - 1000 = 3600000). The `MAX_AGE` does need to equal `EXPIRATION` value. FA_SCRIPT is for the FontAwesome CDN script which can be blank if you don't have one. FA_SCRIPT must be a `.js` script don't try to use `.css`.
+**NOTE:** You can set these values to whatever you want. The expiration value `3600000` represents 1 hour in milliseconds (60min - 60sec - 1000 = 3600000). The `MAX_AGE` does need to equal `EXPIRATION` value. `FA_SCRIPT` is for the FontAwesome CDN script which can be blank if you don't have one. `FA_SCRIPT` must be a `.js` script don't try to use `.css`.
 
 ### 3. In the project directory, you can run:
 
