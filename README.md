@@ -12,7 +12,7 @@ You can see live demo of this project [here](https://ancient-bastion-93975.herok
 
 ## 🚀 Quick start
 
-**NOTE:** Look at the README in get-started branch for more information on how this code was created. If you care, other wise you can just use the main branch to get the full blown app.
+**NOTE:** Look at the README in the get-started branch for in depth setup of how this app was created.
 
 ### 1. Get the code downloaded
 
