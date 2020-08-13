@@ -66,7 +66,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 | Path         | Method | Description                                                            |
 | :----------- | ------ | :--------------------------------------------------------------------- |
 | /            | GET    | Home page                                                              |
-| /login       | GET    | login page                                                             |
+| /login       | GET    | Login page                                                             |
 | /login       | POST   | Send valid username and password in request body and crates new token. |
 | /logout      | DELETE | Destroys your session.                                                 |
 | /api/token   | GET    | \*Current JSON Web Token.                                              |
