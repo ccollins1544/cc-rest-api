@@ -63,14 +63,14 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 #### Available Routes
 
-| Path         | Method | Description                                                            |
-| :----------- | ------ | :--------------------------------------------------------------------- |
-| /            | GET    | Home page                                                              |
-| /login       | GET    | Login page                                                             |
-| /login       | POST   | Send valid username and password in request body and crates new token. |
-| /logout      | DELETE | Destroys your session.                                                 |
-| /api/token   | GET    | \*Current JSON Web Token.                                              |
-| /api/payload | GET    | \*Payload from decodedToken.                                           |
+| Path         | Method | Description                                                             |
+| :----------- | ------ | :---------------------------------------------------------------------- |
+| /            | GET    | Home page                                                               |
+| /login       | GET    | Login page                                                              |
+| /login       | POST   | Send valid username and password in request body and crates new token.  |
+| /logout      | DELETE | Destroys your session and removes token and payload from local storage. |
+| /api/token   | GET    | \*Current JSON Web Token.                                               |
+| /api/payload | GET    | \*Payload from decodedToken.                                            |
 
 \*Secured route.
 

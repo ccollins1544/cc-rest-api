@@ -285,6 +285,9 @@ $(function () {
       url: "/logout",
       method: "DELETE",
       success: function (response) {
+        localStorage.removeItem("cc_rest_api_token");
+        localStorage.removeItem("cc_rest_api_payload");
+
         if (response.ok) {
           AlertMessage(response.message, "success");
           window.location.href = "/login";
