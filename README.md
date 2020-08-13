@@ -30,20 +30,22 @@ git clone git@github.com:ccollins1544/cc-rest-api.git
 
 ### 2. **Set Environment Variables**
 
-Create the file `.env` and copy/paste this,
+Create the file `.env` in the root of the project folder `cc-rest-api` and copy/paste this,
 
 ```shell
-DEBUG=
-USERNAME=
-PASSWORD=
-ISSUER=
-SUBJECT=
-AUDIENCE=
-MAX_AGE=
-EXPIRATION=
-SESSION_SECRET=
+DEBUG=false
+USERNAME=demo
+PASSWORD=123456
+ISSUER=demo-issuer
+SUBJECT=demo-subject
+AUDIENCE=demo-audience
+MAX_AGE=3600000
+EXPIRATION=3600000
+SESSION_SECRET=secret-goes-here
 FA_SCRIPT=
 ```
+
+**NOTE:** You can set these values to whatever you want. The expiration value `3600000` represents 1 hour in milliseconds (60min _ 60sec _ 1000 = 3600000). The `MAX_AGE` does need to equal `EXPIRATION` value. FA_SCRIPT is for the FontAwesome CDN script which can be blank if you don't have one. FA_SCRIPT must be a `.js` script don't try to use `.css`.
 
 ### 3. In the project directory, you can run:
 
