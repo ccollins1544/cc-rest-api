@@ -1,6 +1,8 @@
 const router = require("express").Router();
-const testRoute = require("./testRoute");
+const payloadRoute = require("./payloadRoute");
+const tokenRoute = require("./tokenRoute");
 
-router.use("/test", testRoute);
+router.use("/payload", payloadRoute);
+router.use("/token", tokenRoute);
 
 module.exports = router;

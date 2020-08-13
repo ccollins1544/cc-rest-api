@@ -57,6 +57,21 @@ cd cc-rest-api
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
+## 🥑 Usage
+
+#### Available Routes
+
+| Path         | Method | Description                                                            |
+| ------------ | ------ | ---------------------------------------------------------------------- |
+| /            | GET    | Home page                                                              |
+| /login       | GET    | login page                                                             |
+| /login       | POST   | Send valid username and password in request body and crates new token. |
+| /logout      | DELETE | Destroys your session.                                                 |
+| /api/token   | GET    | \*Current JSON Web Token.                                              |
+| /api/payload | GET    | \*Payload from decodedToken.                                           |
+
+\*Secured route.
+
 ## 🏆 Credit
 
 - [Christopher Collins](https://ccollins.io)

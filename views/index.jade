@@ -28,24 +28,29 @@ block content
           table.table.table-striped.table-dark
             thead 
               tr 
-                th Path
+                th.text-left Path
                 th Method 
                 th.text-left Description
             tbody
               tr
-                td /
-                td GET
-                td.text-left This page.
-              tr
-                td /login
-                td GET
-                td.text-left Login page.
-              tr
-                td /login
+                td.text-left /login
                 td POST
-                td.text-left Send username and password and creates new token if valid. 
+                td.text-left Send valid username and password in request body and creates new token. 
               tr
-                td /logout
+                td.text-left /logout
                 td DELETE
-                td.text-left Destroys your session. For logging out. 
+                td.text-left Destroys your session.
+              tr
+                td.text-left 
+                  a(href="/api/token", target="_blank") /api/token
+                td GET
+                td.text-left *Current JSON Web Token.
+              tr
+                td.text-left
+                  a(href="/api/payload", target="_blank") /api/payload
+                td GET
+                td.text-left *Payload from decodedToken.
+            tfoot 
+              tr 
+                td.text-left(colspan="3") *Secured route
 
