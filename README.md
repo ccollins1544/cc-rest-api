@@ -62,7 +62,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 #### Available Routes
 
 | Path         | Method | Description                                                            |
-| ------------ | ------ | ---------------------------------------------------------------------- |
+| :----------- | ------ | :--------------------------------------------------------------------- |
 | /            | GET    | Home page                                                              |
 | /login       | GET    | login page                                                             |
 | /login       | POST   | Send valid username and password in request body and crates new token. |
