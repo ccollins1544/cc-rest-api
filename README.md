@@ -45,7 +45,7 @@ SESSION_SECRET=secret-goes-here
 FA_SCRIPT=
 ```
 
-**NOTE:** You can set these values to whatever you want. The expiration value `3600000` represents 1 hour in milliseconds (60min - 60sec - 1000 = 3600000). The `MAX_AGE` does need to equal `EXPIRATION` value. `FA_SCRIPT` is for the FontAwesome CDN script which can be blank if you don't have one. `FA_SCRIPT` must be a `.js` script don't try to use `.css`.
+**NOTE:** You can set these values to whatever you want. The expiration value `3600000` represents 1 hour in milliseconds (60min x 60sec x 1000 = 3600000). The `MAX_AGE` does need to equal `EXPIRATION` value. `FA_SCRIPT` is for the FontAwesome CDN script which can be blank if you don't have one. `FA_SCRIPT` must be a `.js` script don't try to use `.css`.
 
 ### 3. In the project directory, you can run:
 
@@ -67,7 +67,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 | :----------- | ------ | :---------------------------------------------------------------------- |
 | /            | GET    | Home page                                                               |
 | /login       | GET    | Login page                                                              |
-| /login       | POST   | Send valid username and password in request body and crates new token.  |
+| /login       | POST   | Send valid username and password in request body and creates new token. |
 | /logout      | DELETE | Destroys your session and removes token and payload from local storage. |
 | /api/token   | GET    | \*Current JSON Web Token.                                               |
 | /api/payload | GET    | \*Payload from decodedToken.                                            |
