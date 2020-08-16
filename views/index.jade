@@ -1,16 +1,26 @@
 extends layout
 
+block payload_view 
+  div.text-left
+    h3 Payload
+    pre= JSON.stringify(payload, null, 2) 
+
+block token_view 
+  div.text-left
+    h3 Token
+    p#token= token
+
 block content
-  div.col-12
+  div.col-12.mb-3
     ul.list-group.list-group-horizontal
       li.list-group-item.list-group-item-primary 
         strong#clock Loading ...
       li.list-group-item.list-group-item-primary
         strong IssuedAt: 
-        span#iat #{iat}
+        span#iat #{payload.iat}
       li.list-group-item.list-group-item-primary
         strong Expires: 
-        span#exp #{exp}
+        span#exp #{payload.exp}
       li.list-group-item.list-group-item-primary
         strong Time Remaining: 
         - var time_remaining = (exp - iat) / 60 
@@ -35,7 +45,7 @@ block content
               tr
                 td.text-left /login
                 td POST
-                td.text-left Send valid username and password in request body and creates new token. 
+                td.text-left Send valid email and password in request body and creates new token. 
               tr
                 td.text-left /logout
                 td DELETE
@@ -53,4 +63,12 @@ block content
             tfoot 
               tr 
                 td.text-left(colspan="3") *Secured route
+  
+  div.col-12 
+    if payload 
+      block payload_view
+    
+    if token
+      block token_view
+      
 

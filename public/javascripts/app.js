@@ -4,6 +4,7 @@
  *   1.1 AlertMessage()
  *   1.2 getFormData
  *   1.3 startClock
+ *   1.4 validateForm
  *
  * 2. Document Ready
  *   2.1 Update Home Page Content
@@ -13,8 +14,11 @@
  *   2.2 Update Login Page Content
  *     2.2.1 Retrieve Local Storage payload and token
  *
- *   2.3 Login Form Submit
- *   2.4 Logout Click
+ *   2.3 Toggle SignUp or Login
+ *   2.4 Login Form Submit
+ *   2.5 SignUp Form Submit
+ *   2.6 Logout Click
+ *   2.7 Validate form on keyup
  ******************************************************/
 /* ===============[ 1. FUNCTIONS ]====================*/
 /**
@@ -86,7 +90,7 @@ function getFormData(formID) {
     }
     formData[KEY] = VALUE.trim();
     if (formData[KEY] === "") {
-      return; // prevent empty entries into database
+      delete formData[KEY]; // prevent empty entries into database
     }
   }
 
@@ -98,12 +102,59 @@ function getFormData(formID) {
  * Displays current time and continues counting the seconds.
  * @param {string} divSelector - defaults to #clock
  */
-var startClock = function (divSelector) {
+let startClock = function (divSelector) {
   divSelector = divSelector === undefined ? "#clock" : divSelector;
   setInterval(function () {
     $(divSelector).html(moment().format("MMMM D, YYYY hh:mm:ss A"));
   }, 1000);
 }; // END startClock
+
+/**
+ * 1.4 validateForm
+ */
+let validateForm = (fieldValue, fieldType = "email", show_alert = true) => {
+  let isValid = false;
+
+  switch (fieldType) {
+    case "password":
+      if (fieldValue.length < 1) {
+        if (show_alert) AlertMessage("Missing password", "info");
+      } else if (fieldValue.length < 6) {
+        if (show_alert)
+          AlertMessage("Password must be atleast 6 characters long", "info");
+      } else {
+        if (show_alert) AlertMessage("Looks Good!", "success");
+        isValid = true;
+      }
+      break;
+
+    case "confirm_password":
+      if (fieldValue.length > 1 && Array.isArray(fieldValue)) {
+        if (fieldValue[0] !== fieldValue[1]) {
+          if (show_alert) AlertMessage("Passwords don't match!", "info");
+        } else {
+          if (show_alert) AlertMessage("Looks Good!", "success");
+          isValid = true;
+        }
+      }
+      break;
+
+    default:
+      if (
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(fieldValue) ===
+        false
+      ) {
+        if (show_alert)
+          AlertMessage("You have entered an invalid email address!", "danger");
+      } else {
+        if (show_alert) AlertMessage("Looks Good!", "success");
+        isValid = true;
+      }
+      break;
+  }
+
+  return isValid;
+};
 
 /**
  * 2. Document Ready
@@ -236,8 +287,42 @@ $(function () {
     }
   }
 
-  // 2.2 Login Form Submit
-  $("#login-form").on("submit", function (e) {
+  // 2.3 Toggle SignUp or Login
+  $("#login_page").on("click", "#toggle_signup", function (e) {
+    e.preventDefault();
+
+    let cardTitle = $(this).closest(".card").find("h2");
+    let submitBtn = $(this).closest("form").find(":submit");
+
+    if (cardTitle.text() === "Login") {
+      $("#login-form").attr("id", "signup-form");
+      cardTitle.text("Sign Up");
+      submitBtn.text("Sign Up");
+
+      $(this).text("Login");
+      $(this)
+        .closest("p")
+        .each(function () {
+          $(this).html($(this).html().replace("Dont", "Already"));
+        });
+    } else {
+      $("#signup-form").attr("id", "login-form");
+      $(this).text("Sign Up");
+      cardTitle.text("Login");
+      submitBtn.text("Login");
+
+      $(this)
+        .closest("p")
+        .each(function () {
+          $(this).html($(this).html().replace("Already", "Dont"));
+        });
+    }
+
+    $("#confirm_password_row").toggleClass("hidden");
+  });
+
+  // 2.4 Login Form Submit
+  $("#login_page").on("submit", "#login-form", function (e) {
     e.preventDefault();
     var data = getFormData(e.target.id);
 
@@ -257,10 +342,10 @@ $(function () {
       },
       error: function (request, error) {
         // console.log("request", request);
-        // console.log("responseText", JSON.parse(request.responseText));
+        // console.log("responseText", request.responseText);
         // console.log("error", error);
 
-        let responseText = JSON.parse(request.responseText);
+        let responseText = request.responseText;
         let ErrorMessage =
           "Error: " + request.status + ", " + request.statusText;
         ErrorMessage += responseText.hasOwnProperty("message")
@@ -277,7 +362,50 @@ $(function () {
     });
   });
 
-  // 2.3 Logout Click
+  // 2.5 SignUp Form Submit
+  $("#login_page").on("submit", "#signup-form", function (e) {
+    e.preventDefault();
+    var data = getFormData(e.target.id);
+
+    $.ajax({
+      url: "/user",
+      method: "POST",
+      data: data,
+      dataType: "json",
+      timeout: 5000,
+      success: function (response) {
+        if (response.ok) {
+          AlertMessage(response.message, "success");
+          $("#toggle_signup").click();
+          $("#login-form").submit();
+        } else {
+          AlertMessage(response.message, "danger");
+        }
+      },
+      error: function (request, error) {
+        // console.log("request", request);
+        // console.log("responseText", JSON.parse(request.responseText));
+        // console.log("error", error);
+
+        let responseText = JSON.parse(request.responseText);
+        let ErrorMessage =
+          "Error: " + request.status + ", " + request.statusText;
+        ErrorMessage += responseText.hasOwnProperty("message")
+          ? " " + responseText.message
+          : "";
+
+        if (request.status === 200) {
+          AlertMessage(ErrorMessage, "success");
+          $("#toggle_signup").click();
+          $("#login-form").submit();
+        } else {
+          AlertMessage(ErrorMessage, "danger");
+        }
+      },
+    });
+  });
+
+  // 2.6 Logout Click
   $("#logout").on("click", function (e) {
     e.preventDefault();
 
@@ -311,5 +439,40 @@ $(function () {
         }
       },
     });
+  });
+
+  // 2.7 Validate form on keyup
+  $("#email").keyup(function () {
+    if (validateForm($(this).val(), "email")) {
+      $(this).css("background-color", "#28a745");
+    } else {
+      if (/\w+@/.test($(this).val())) {
+        $(this).css("background-color", "yellow");
+      } else {
+        $(this).css("background-color", "#E9290F");
+      }
+    }
+  });
+
+  $("#password").keyup(function () {
+    if (validateForm($(this).val(), "password")) {
+      $(this).css("background-color", "#28a745");
+    } else {
+      if ($(this).val().length > 3) {
+        $(this).css("background-color", "yellow");
+      } else {
+        $(this).css("background-color", "#E9290F");
+      }
+    }
+  });
+
+  $("#confirm_password").keyup(function () {
+    if (
+      validateForm([$("#password").val(), $(this).val()], "confirm_password")
+    ) {
+      $(this).css("background-color", "#28a745");
+    } else {
+      $(this).css("background-color", "yellow");
+    }
   });
 });

@@ -33,9 +33,9 @@ git clone git@github.com:ccollins1544/cc-rest-api.git
 Create the file `.env` in the root of the project folder `cc-rest-api` and copy and paste this,
 
 ```shell
+# Main Env Variables
+NODE_ENV=development
 DEBUG=false
-USERNAME=demo
-PASSWORD=123456
 ISSUER=demo-issuer
 SUBJECT=demo-subject
 AUDIENCE=demo-audience
@@ -43,6 +43,16 @@ MAX_AGE=3600000
 EXPIRATION=3600000
 SESSION_SECRET=secret-goes-here
 FA_SCRIPT=
+USERNAME=demo
+PASSWORD=123456
+
+# Database Connection Credentials
+MYSQL_HOST=localhost
+MYSQL_PORT=3306
+MYSQL_DATABASE=cc_rest_api
+MYSQL_USER=
+MYSQL_PASSWORD=
+MYSQL_TIMEZONE="US/Mountain"
 ```
 
 **NOTE:** You can set these values to whatever you want. The expiration value `3600000` represents 1 hour in milliseconds (60min x 60sec x 1000 = 3600000). The `MAX_AGE` does need to equal `EXPIRATION` value. `FA_SCRIPT` is for the FontAwesome CDN script which can be blank if you don't have one. `FA_SCRIPT` must be a `.js` script don't try to use `.css`.
@@ -73,6 +83,27 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 | /api/payload | GET    | \*Payload from decodedToken.                                            |
 
 \*Secured route.
+
+### ⭐ Securing Routes
+
+All routes should be secured using jwtStrategy `validateAccessToken` and then immediately after use the user controller `login` function. The password and token should have already been verified before reaching the user controller login function and will update the database with `last_used_token` if the session.logged_in has not been set to true yet.
+
+For example, see the `/api/payload` route,
+
+```javascript
+const router = require("express").Router();
+const methods = require("../../middlewares/jwtStrategy");
+const userController = require("../../controllers/user");
+
+// Matches with "/api/payload" GET
+router
+  .route("/")
+  .get(methods.validateAccessToken, userController.login, (req, res, next) => {
+    res.status(200).send(req.session.payload);
+  });
+
+module.exports = router;
+```
 
 ## 🏆 Credit
 

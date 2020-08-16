@@ -7,8 +7,8 @@ block content
         h2= page_title
         span#clock.text-white
       div.card-body.bg-dark
-        if login 
-          p.text-white Hi #{username}! Looks like you're already logged in!
+        if logged_in 
+          p.text-white Hi #{email}! Looks like you're already logged in!
           a(href="/")
             button.btn.btn-dark
               if fa_script 
@@ -18,19 +18,27 @@ block content
         else 
           form#login-form
             div.form-group.row
-              label.col-sm-4.form-label.text-white(for="username") Username: 
+              label.col-sm-4.form-label.text-white.text-right(for="email") Email: 
               div.col-sm-8.input-group 
-                input.form-input#username(type="text", name="username", placeholder="Username", )
+                input.form-input#email(type="text", name="email", placeholder="Email", autocomplete="chrome-off")
             div.form-group.row
-              label.col-sm-4.form-label.text-white(for="password") Password: 
+              label.col-sm-4.form-label.text-white.text-right(for="password") Password: 
               div.col-sm-8.input-group 
-                input.form-input#password(type="password", name="password", placeholder="password", )
+                input.form-input#password(type="password", name="password", placeholder="password", autocomplete="chrome-off")
+            div.form-group.row.hidden#confirm_password_row
+              label.col-sm-4.form-label.text-white.text-right(for="confirm_password") Confirm Password: 
+              div.col-sm-8.input-group 
+                input.form-input#confirm_password(type="password", name="confirm_password", placeholder="confirm password", autocomplete="chrome-off")
             div.form-group.row
               span.col-sm-12.input-group-btn.text-right 
                 button.btn.btn-dark.form-input(type="submit")
                   if fa_script 
                     i.fas.fa-user
                   |  #{page_title}
+            div.form-group.row 
+              p.col-12.text-white Dont have an account? 
+                a#toggle_signup.accent-text Sign Up
+
 
 
             
