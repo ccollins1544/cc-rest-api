@@ -7,9 +7,6 @@ html
     meta(name='description', content="Example REST API")
 
     link(rel='stylesheet', href="https://fonts.googleapis.com/css?family=Montserrat|Press+Start+2P|Ubuntu&display=swap")
-    if fa_script 
-      script(src="#{fa_script}")
-
     link(rel='stylesheet' href='/bootstrap/dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
 
@@ -28,6 +25,9 @@ html
     block footer
       include includes/footer
 
+    if fa_script 
+      script(src="#{fa_script}")
+      
     script(src='/jquery/dist/jquery.min.js')
     script(src='/bootstrap/dist/js/bootstrap.min.js')
     script(src='/moment/min/moment.min.js')

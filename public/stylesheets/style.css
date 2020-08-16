@@ -162,6 +162,11 @@ hr {
   border: solid 1px var(--body-text);
 }
 
+.accent-text {
+  color: var(--accent-text);
+  cursor: pointer;
+}
+
 /* 1.2 Buttons and Forms
 /*------------------------------------------------------*/
 [type="button"]:not(:disabled),
@@ -659,7 +664,7 @@ section#comment-section.jumbotron {
 /* 3.3 Main Section
 /*------------------------------------------------------*/
 #login_page #main-section>div {
-  max-width: 400px;
+  max-width: 585px;
 }
 
 #main-section {
@@ -691,6 +696,13 @@ section#comment-section.jumbotron {
   color: var(--body-background) !important;
 }
 
+.hidden {
+  display: none;
+}
+
+#token {
+  font-size: 10px;
+}
 
 /*------------------------------------------------------*/
 /*--------------[ 4.0 AlertMessages ]-------------------*/

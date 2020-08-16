@@ -16,6 +16,7 @@ for (var k in envConfig) {
 const createError = require("http-errors");
 const express = require("express");
 const session = require("express-session");
+const passport = require("./middlewares/passport");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
@@ -52,6 +53,9 @@ app.use(
     },
   }),
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 /* ===============[ Static Assets ]===========================*/
 app.use(express.static(path.join(__dirname, "public")));

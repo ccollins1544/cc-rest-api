@@ -9,11 +9,11 @@ block header
         
       div.collapse.navbar-collapse.show 
         ul.navbar-nav.ml-auto 
-          if login
+          if logged_in
             li.nav-item
               if fa_script 
                 i.fas.fa-user-lock.mr-2
-              span Welcome #{username}!
+              span Welcome #{email}!
             li.nav-item 
               a.nav-link#logout(href="/logout")
                 if fa_script
