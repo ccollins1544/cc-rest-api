@@ -21,6 +21,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const utils = require("./utils");
+const colors = require("colors");
 
 const app = express();
 
@@ -77,6 +78,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //configures body parser to parse url encoded data
 
+// Template Variables which can be used on .jade files with =variable or =function()
+app.locals = {
+  ...app.locals,
+  app_name: require("./package.json").name,
+  app_version: require("./package.json").version,
+  the_year: function () {
+    return new Date().getFullYear();
+  },
+};
+
 /* ===============[ Routes ]==================================*/
 const Routes = require("./routes/index");
 app.use(Routes);
@@ -99,8 +110,15 @@ app.use(function (err, req, res, next) {
 
 /* ===============[ Generate Keys for Auth ]=========================*/
 if (!fs.existsSync("public.pem") || !fs.existsSync("private.pem")) {
-  console.log("Generating Keys");
-  utils.generateKeys();
+  console.log("Generating Keys".green);
+  utils.generateKeysAndSave();
+}
+
+if (
+  process.env.DEMO_USER !== undefined &&
+  process.env.DEMO_PASSWORD !== undefined
+) {
+  utils.seed_demo_user();
 }
 
 module.exports = app;

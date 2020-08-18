@@ -1,5 +1,5 @@
 block footer 
-  footer#main-footer(data-payload=(payload ? JSON.stringify(payload) : "{}"), data-token=(token ? token : " "))
+  footer#main-footer(data-payload=(payload ? JSON.stringify(payload) : "{}"), data-token=(token ? token : " ") data-demo_user=(demo_user))
     nav.navbar.navbar-expand-lg.navbar-dark.bg-dark#footer-nav
       div.navbar-collapse 
         ul.navbar-nav 
@@ -24,9 +24,13 @@ block footer
 
     div#footer-bottom   
       div#footer-info 
-        | Copyright © 2020 | 
+        | Copyright © 
+        =the_year()
+        |  | 
         a.footer-link(href=".")
-          | #{site_title}
+          =app_name 
+          | 
+          =app_version
         a.footer-link(href="https://github.com/ccollins1544/cc-rest-api", target="_blank" rel="noopener noreferrer")
           |  
           if fa_script 

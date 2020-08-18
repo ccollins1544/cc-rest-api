@@ -24,6 +24,7 @@ router.get(
       page_title: "Home",
       slug: "home",
       fa_script: process.env.FA_SCRIPT || false,
+      demo_user: process.env.DEMO_USER || false,
       logged_in: req.session.logged_in,
       email: req.session.email,
       token: req.session.token,
