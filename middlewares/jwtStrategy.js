@@ -1,3 +1,4 @@
+process.env.DOTENV_LOADED || require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
 const jwt = require("jsonwebtoken");

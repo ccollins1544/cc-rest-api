@@ -19,6 +19,7 @@
  *   2.5 SignUp Form Submit
  *   2.6 Logout Click
  *   2.7 Validate form on keyup
+ *   2.8 toggle-hidden class
  ******************************************************/
 /* ===============[ 1. FUNCTIONS ]====================*/
 /**
@@ -483,6 +484,15 @@ $(function () {
       $(this).css("background-color", "#28a745");
     } else {
       $(this).css("background-color", "yellow");
+    }
+  });
+
+  // 2.8 toggle-hidden class
+  $(".toggle-hidden").on("click", function () {
+    if ($(this).next().length > 0) {
+      $(this).next().toggleClass("hidden");
+    } else {
+      $(this).toggleClass("hidden");
     }
   });
 });
