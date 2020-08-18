@@ -2,12 +2,12 @@ extends layout
 
 block payload_view 
   div.text-left
-    h3 Payload
-    pre= JSON.stringify(payload, null, 2) 
+    h3.accent-text.toggle-hidden Payload
+    pre#payload= JSON.stringify(payload, null, 2) 
 
 block token_view 
   div.text-left
-    h3 Token
+    h3.accent-text.toggle-hidden Token
     p#token= token
 
 block content
@@ -70,5 +70,4 @@ block content
     
     if token
       block token_view
-      
 
