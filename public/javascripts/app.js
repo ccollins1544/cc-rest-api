@@ -326,6 +326,14 @@ $(function () {
     e.preventDefault();
     var data = getFormData(e.target.id);
 
+    let demo_user = $("#main-footer").data("demo_user");
+    if (
+      demo_user &&
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(demo_user) === false
+    ) {
+      data.email = data.email + "@" + data.email + ".com";
+    }
+
     $.ajax({
       url: "/login",
       method: "POST",
@@ -443,10 +451,12 @@ $(function () {
 
   // 2.7 Validate form on keyup
   $("#email").keyup(function () {
-    if (validateForm($(this).val(), "email")) {
+    let demo_user = $("#main-footer").data("demo_user");
+
+    if (validateForm($(this).val(), "email") || demo_user === $(this).val()) {
       $(this).css("background-color", "#28a745");
     } else {
-      if (/\w+@/.test($(this).val())) {
+      if (/\w+@/.test($(this).val()) || demo_user === $(this).val()) {
         $(this).css("background-color", "yellow");
       } else {
         $(this).css("background-color", "#E9290F");

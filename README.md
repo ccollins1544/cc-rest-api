@@ -35,6 +35,10 @@ Create the file `.env` in the root of the project folder `cc-rest-api` and copy 
 ```shell
 # Main Env Variables
 NODE_ENV=development
+DOTENV_LOADED=true
+FA_SCRIPT=
+
+# JWT Variables
 DEBUG=false
 ISSUER=demo-issuer
 SUBJECT=demo-subject
@@ -42,9 +46,10 @@ AUDIENCE=demo-audience
 MAX_AGE=3600000
 EXPIRATION=3600000
 SESSION_SECRET=secret-goes-here
-FA_SCRIPT=
-USERNAME=demo
-PASSWORD=123456
+
+# DB Seed Variables
+DEMO_USER=demo
+DEMO_PASSWORD=123456
 
 # Database Connection Credentials
 MYSQL_HOST=localhost

@@ -118,6 +118,31 @@ module.exports = {
       .catch((err) => res.status(422).json(err));
   },
 
+  upsert: (values, condition) => {
+    return db.User.findOne({
+      where: condition,
+    }).then((dbModel) => {
+      if (dbModel) {
+        return dbModel.update(values);
+      }
+
+      return db.User.create(values);
+    });
+  },
+
+  insert: (values, condition) => {
+    return db.User.findOne({
+      where: condition,
+    }).then((dbModel) => {
+      if (dbModel) {
+        console.log("Already in database.");
+        return;
+      }
+
+      return db.User.create(values);
+    });
+  },
+
   test: (req, res) => {
     res.status(200).json(req.body);
   },
