@@ -12,7 +12,7 @@ module.exports = {
       dateStrings: true,
       typeCast: true,
     },
-    timezone: process.env.MYSQL_TIMEZONE || "US/Mountain",
+    timezone: process.env.MYSQL_TIMEZONE || "-06:00",
     pool: {
       max: 10,
       min: 0,
@@ -30,7 +30,7 @@ module.exports = {
     dialectOptions: {
       timezone: "local",
     },
-    timezone: process.env.MYSQL_TIMEZONE || "US/Mountain",
+    timezone: process.env.MYSQL_TIMEZONE || "-06:00",
     logging: false,
     pool: {
       max: 10,
@@ -46,7 +46,7 @@ module.exports = {
       dateStrings: true,
       typeCast: true,
     },
-    timezone: process.env.MYSQL_TIMEZONE || "US/Mountain",
+    timezone: process.env.MYSQL_TIMEZONE || "-06:00",
     pool: {
       max: 10,
       min: 0,

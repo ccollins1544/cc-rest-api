@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "seed": "node scripts/seedDB.js"
+    "seed": "node --max-old-space-size=4096 scripts/seedDB.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "bootstrap": "^4.5.2",
+    "cli-table2": "^0.2.0",
     "colors": "^1.4.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",

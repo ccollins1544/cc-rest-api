@@ -34,7 +34,7 @@ Create the file `.env` in the root of the project folder `cc-rest-api` and copy 
 
 ```shell
 # Main Env Variables
-NODE_ENV=development
+NODE_ENV=test
 DOTENV_LOADED=true
 FA_SCRIPT=
 
@@ -50,6 +50,7 @@ SESSION_SECRET=secret-goes-here
 # DB Seed Variables
 DEMO_USER=demo
 DEMO_PASSWORD=123456
+SEED_EMPLOYEES=false
 
 # Database Connection Credentials
 MYSQL_HOST=localhost
@@ -57,7 +58,7 @@ MYSQL_PORT=3306
 MYSQL_DATABASE=cc_rest_api
 MYSQL_USER=
 MYSQL_PASSWORD=
-MYSQL_TIMEZONE="US/Mountain"
+MYSQL_TIMEZONE="-06:00"
 ```
 
 **NOTE:** You can set these values to whatever you want. The expiration value `3600000` represents 1 hour in milliseconds (60min x 60sec x 1000 = 3600000). The `MAX_AGE` does need to equal `EXPIRATION` value. `FA_SCRIPT` is for the FontAwesome CDN script which can be blank if you don't have one. `FA_SCRIPT` must be a `.js` script don't try to use `.css`.
