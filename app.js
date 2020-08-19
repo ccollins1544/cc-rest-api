@@ -110,15 +110,34 @@ app.use(function (err, req, res, next) {
 
 /* ===============[ Generate Keys for Auth ]=========================*/
 if (!fs.existsSync("public.pem") || !fs.existsSync("private.pem")) {
-  console.log("Generating Keys".green);
-  utils.generateKeysAndSave();
+  console.log("Generating Keys".yellow);
+
+  setTimeout(() => {
+    utils.generateKeysAndSave();
+  }, 3000);
 }
 
+/* ===============[ Seed DB ]=========================*/
 if (
   process.env.DEMO_USER !== undefined &&
   process.env.DEMO_PASSWORD !== undefined
 ) {
-  utils.seed_demo_user();
+  console.log("Seeding demo user...".yellow);
+
+  setTimeout(() => {
+    utils.seed_demo_user();
+  }, 3000);
+}
+
+if (
+  process.env.SEED_EMPLOYEES !== undefined &&
+  process.env.SEED_EMPLOYEES == "true"
+) {
+  console.log("Seeding Employees...".yellow);
+
+  setTimeout(() => {
+    utils.seed_employees();
+  }, 5000);
 }
 
 module.exports = app;
