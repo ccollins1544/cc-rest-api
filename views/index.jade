@@ -36,7 +36,52 @@ block content
           div
             if fa_script 
               i.fas.fas.fa-server.mr-2
-            span Available Routes
+            span Employees Model Routes
+          
+        div.card-body.bg-dark
+          table.table.table-striped.table-dark
+            thead 
+              tr 
+                th.text-left Path
+                th Method 
+                th.text-left Description
+            tbody
+              tr.border.border-primary
+                td.text-left
+                  a(href="/api/employee", target="_blank") /api/employee
+                td 
+                  span.badge.badge-primary GET
+                td.text-left Retrieves all data from employees. Can accept query parameters ?limit=1000&orderby=last_name&order=asc.
+              tr.border.border-primary
+                td.text-left /api/employee/emp_no
+                td 
+                  span.badge.badge-primary GET
+                td.text-left Retrieves single item from employees. 
+              tr.border.border-success
+                td.text-left /api/employee
+                td
+                  span.badge.badge-success POST
+                td.text-left Inserts new item to employees. If emp_no is passed in the request body then we'll check if exists and update. 
+              tr.border.border-warning
+                td.text-left /api/employee/emp_no
+                td 
+                  span.badge.badge-warning PUT
+                td.text-left Updates an existing item from employees and returns the updated item in the response. 
+              tr.border.border-danger
+                td.text-left /api/employee/emp_no
+                td 
+                  span.badge.badge-danger DELETE
+                td.text-left Deletes an item from employees.
+            tfoot 
+              tr 
+                td.text-left(colspan="3") NOTE: All of these routes are secured route with JWT.
+
+      div.card.bg-dark.col-12.pb-3
+        div.card-header.text-white.d-flex.justify-content-between 
+          div
+            if fa_script 
+              i.fas.fas.fa-server.mr-2
+            span Misc Routes
           
         div.card-body.bg-dark
           table.table.table-striped.table-dark
@@ -50,53 +95,39 @@ block content
                 td.text-left /login
                 td 
                   span.badge.badge-success POST
-                td.text-left Send valid email and password in request body and creates new token. 
+                td.text-left *Send valid email and password in request body and creates new token. 
               tr.border.border-danger
                 td.text-left /logout
                 td 
                   span.badge.badge-danger DELETE
-                td.text-left Destroys your session and removes token and payload from local storage.
+                td.text-left *Destroys your session and removes token and payload from local storage.
+              tr.border.border-primary
+                td.text-left 
+                  a(href="/", target="_blank") /
+                td 
+                  span.badge.badge-primary GET
+                td.text-left Index page
+              tr.border.border-primary
+                td.text-left 
+                  a(href="/login", target="_blank") /login
+                td 
+                  span.badge.badge-primary GET
+                td.text-left Login page
               tr.border.border-primary
                 td.text-left 
                   a(href="/api/token", target="_blank") /api/token
                 td 
                   span.badge.badge-primary GET
-                td.text-left *Current JSON Web Token.
+                td.text-left Current JSON Web Token.
               tr.border.border-primary
                 td.text-left
                   a(href="/api/payload", target="_blank") /api/payload
                 td 
                   span.badge.badge-primary GET
-                td.text-left *Payload from decodedToken.
-              tr.border.border-primary
-                td.text-left
-                  a(href="/api/employee", target="_blank") /api/employee
-                td 
-                  span.badge.badge-primary GET
-                td.text-left *Retrieves all data from employees. Can accept query parameters ?limit=1000&orderby=last_name&order=asc.
-              tr.border.border-primary
-                td.text-left /api/employee/emp_no
-                td 
-                  span.badge.badge-primary GET
-                td.text-left *Retrieves single item from employees. 
-              tr.border.border-success
-                td.text-left /api/employee
-                td
-                  span.badge.badge-success POST
-                td.text-left *Inserts new item to employees. If emp_no is passed in the request body then we'll check if exists and update. 
-              tr.border.border-warning
-                td.text-left /api/employee/emp_no
-                td 
-                  span.badge.badge-warning PUT
-                td.text-left *Updates an existing item from employees and returns the updated item in the response. 
-              tr.border.border-danger
-                td.text-left /api/employee/emp_no
-                td 
-                  span.badge.badge-danger DELETE
-                td.text-left *Deletes an item from employees.
+                td.text-left Payload from decodedToken.
             tfoot 
               tr 
-                td.text-left(colspan="3") *Secured route with JWT
+                td.text-left(colspan="3") *Not secured route with JWT. All the rest of these routes are secured with JWT.
   
   div.col-12 
     if payload 
