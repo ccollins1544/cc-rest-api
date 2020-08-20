@@ -128,7 +128,6 @@ For example, see the `/api/payload` route,
 ```javascript
 const router = require("express").Router();
 const methods = require("../../middlewares/jwtStrategy");
-const userController = require("../../controllers/user");
 
 // Matches with "/api/payload" GET
 router.route("/").get(methods.validateAccessToken, (req, res, next) => {
