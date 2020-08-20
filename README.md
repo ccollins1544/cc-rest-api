@@ -16,16 +16,22 @@ You can see live demo of this project [here](https://ancient-bastion-93975.herok
 
 ### 1. Get the code downloaded
 
-- For **basic** version use the the code in the **get-started** branch using the git clone command,
+- Use the **get-started** branch for a basic version by the git clone command,
 
 ```shell
 git clone --single-branch --branch get-started git@github.com:ccollins1544/cc-rest-api.git
 ```
 
-- For **advanced** version use the git clone command,
+- Use the **no-db** branch for simple use authentication with no database by the git clone command,
 
 ```shell
-git clone git@github.com:ccollins1544/cc-rest-api.git
+git clone --single-branch --branch no-db git@github.com:ccollins1544/cc-rest-api.git
+```
+
+- Use the **passport-sequelize** branch for user authentication with passport and a CRUD API for the employee model by the git clone command,
+
+```shell
+git clone --single-branch --branch passport-sequelize git@github.com:ccollins1544/cc-rest-api.git
 ```
 
 ### 2. **Set Environment Variables**
@@ -101,23 +107,30 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## 🥑 Usage
 
-#### Available Routes
+#### Employees Model Routes
 
-| Path                 | Method | Description                                                                                                     |
-| :------------------- | ------ | :-------------------------------------------------------------------------------------------------------------- |
-| /                    | GET    | Home page                                                                                                       |
-| /login               | GET    | Login page                                                                                                      |
-| /login               | POST   | Send valid username and password in request body and creates new token.                                         |
-| /logout              | DELETE | Destroys your session and removes token and payload from local storage.                                         |
-| /api/token           | GET    | \*Current JSON Web Token.                                                                                       |
-| /api/payload         | GET    | \*Payload from decodedToken.                                                                                    |
-| /api/employee        | GET    | \*Retrieves all data from employees. Can accept query parameters ?limit=1000&orderby=last_name&order=asc.       |
-| /api/employee/emp_no | GET    | \*Retrieves single item from employees.                                                                         |
-| /api/employee        | POST   | \*Inserts new item to employees. If emp_no is passed in the request body then we'll check if exists and update. |
-| /api/employee/emp_no | PUT    | \*Updates an existing item from employees and returns the updated item in the response.                         |
-| /api/employee/emp_no | DELETE | \*Deletes an item from employees.                                                                               |
+| Path                 | Method | Description                                                                                                   |
+| :------------------- | ------ | :------------------------------------------------------------------------------------------------------------ |
+| /api/employee        | GET    | Retrieves all data from employees. Can accept query parameters ?limit=1000&orderby=last_name&order=asc.       |
+| /api/employee/emp_no | GET    | Retrieves single item from employees.                                                                         |
+| /api/employee        | POST   | Inserts new item to employees. If emp_no is passed in the request body then we'll check if exists and update. |
+| /api/employee/emp_no | PUT    | Updates an existing item from employees and returns the updated item in the response.                         |
+| /api/employee/emp_no | DELETE | Deletes an item from employees.                                                                               |
 
-\*Secured route with JWT.
+**NOTE:** All of these routes are secured with JWT.
+
+#### Misc Routes
+
+| Path         | Method | Description                                                             |
+| :----------- | ------ | :---------------------------------------------------------------------- |
+| /            | GET    | \*Index page                                                            |
+| /login       | GET    | \*Login page                                                            |
+| /login       | POST   | Send valid username and password in request body and creates new token. |
+| /logout      | DELETE | Destroys your session and removes token and payload from local storage. |
+| /api/token   | GET    | Current JSON Web Token.                                                 |
+| /api/payload | GET    | Payload from decodedToken.                                              |
+
+**\***Not secured route with JWT. All the rest of these routes are secured with JWT.
 
 ### ⭐ Securing Routes
 
