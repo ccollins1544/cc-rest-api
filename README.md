@@ -61,7 +61,31 @@ MYSQL_PASSWORD=
 MYSQL_TIMEZONE="-06:00"
 ```
 
-**NOTE:** You can set these values to whatever you want. The expiration value `3600000` represents 1 hour in milliseconds (60min x 60sec x 1000 = 3600000). The `MAX_AGE` does need to equal `EXPIRATION` value. `FA_SCRIPT` is for the FontAwesome CDN script which can be blank if you don't have one. `FA_SCRIPT` must be a `.js` script don't try to use `.css`.
+**NOTE:** You can set these values to whatever you want. See definitions below.
+
+📦 Env Variable Definitions
+
+| Name           | Description                                                                                                                                                               | DEFAULT          |
+| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------- |
+| NODE_ENV       | When this is set to `development` the database is reset and all previous data is lost. Should be set to testing or production normally.                                   | test             |
+| DOTENV_LOADED  | Should always be set to true. Used to verify that this file `.env` is loaded.                                                                                             | true             |
+| FA_SCRIPT      | Is for the FontAwesome CDN script which can be blank if you don't have one. Must be a `.js` script don't try to use `.css`.                                               |                  |
+| DEBUG          | Outputs more to the console log when set to true.                                                                                                                         | false            |
+| ISSUER         | Stored in payload.                                                                                                                                                        | demo-issuer      |
+| SUBJECT        | Stored in payload.                                                                                                                                                        | demo-subject     |
+| AUDIENCE       | Stored in payload.                                                                                                                                                        | demo-audience    |
+| MAX_AGE        | The expiration value `3600000` represents 1 hour in milliseconds (60min x 60sec x 1000 = 3600000). The `MAX_AGE` does need to equal `EXPIRATION` value.                   | 3600000          |
+| EXPIRATION     | The expiration value `3600000` represents 1 hour in milliseconds (60min x 60sec x 1000 = 3600000).                                                                        | 3600000          |
+| SESSION_SECRET | Used in passport session cookies.                                                                                                                                         | secret-goes-here |
+| DEMO_USER      | Demo user. Will be seeded to the database user table automatically.                                                                                                       | demo             |
+| DEMO_PASSWORD  | Demo user password. Will be seeded to the database user table automatically.                                                                                              | 123456           |
+| SEED_EMPLOYEES | Seeds the database with employees from scripts/employees. Make sure to set this to false when done. All previous data is destroy and reset every time the server reloads. | false            |
+| MYSQL_HOST     | Used for your database connection.                                                                                                                                        | localhost        |
+| MYSQL_PORT     | Used for your database connection.                                                                                                                                        | 3306             |
+| MYSQL_DATABASE | Used for your database connection.                                                                                                                                        | cc_rest_api      |
+| MYSQL_USER     | Used for your database connection.                                                                                                                                        |                  |
+| MYSQL_PASSWORD | Used for your database connection.                                                                                                                                        |                  |
+| MYSQL_TIMEZONE | Used for your database connection.                                                                                                                                        | "-06:00"         |
 
 ### 3. In the project directory, you can run:
 
@@ -97,7 +121,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ### ⭐ Securing Routes
 
-All routes should be secured using jwtStrategy `validateAccessToken` and then immediately after use the user controller `login` function. The password and token should have already been verified before reaching the user controller login function and will update the database with `last_used_token` if the session.logged_in has not been set to true yet.
+Secured routes using jwtStrategy `validateAccessToken`. JWT tokens are generated when a user logs in and expires depending on what was set in the `.env` file (defaults 1hour expiration). Which means any valid token can be used to access this api from a different source.
 
 For example, see the `/api/payload` route,
 
@@ -107,11 +131,39 @@ const methods = require("../../middlewares/jwtStrategy");
 const userController = require("../../controllers/user");
 
 // Matches with "/api/payload" GET
-router
-  .route("/")
-  .get(methods.validateAccessToken, userController.login, (req, res, next) => {
-    res.status(200).send(req.session.payload);
-  });
+router.route("/").get(methods.validateAccessToken, (req, res, next) => {
+  res.status(200).send(req.session.payload);
+});
+
+module.exports = router;
+```
+
+Normally the JWT should be good enough but if you would like to verify the user table has the most recent `last_used_token` then use `userController.login` as well as `methods.validateAccessToken`. This will make sure the `last_used_token` is up-to-date and will update `req.session.logged_in = true`.
+
+For example, see the `/` index route,
+
+```javascript
+// Matches with "/" GET
+router.get(
+  "/",
+  methods.validateAccessToken,
+  userController.login,
+  (req, res, next) => {
+    let jadeProps = {
+      site_title: "CC REST API",
+      page_title: "Home",
+      slug: "home",
+      fa_script: process.env.FA_SCRIPT || false,
+      demo_user: process.env.DEMO_USER || false,
+      logged_in: req.session.logged_in,
+      email: req.session.email,
+      token: req.session.token,
+      payload: req.session.payload,
+    };
+
+    res.render("index", jadeProps);
+  },
+);
 
 module.exports = router;
 ```
