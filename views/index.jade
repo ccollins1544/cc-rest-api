@@ -2,12 +2,16 @@ extends layout
 
 block payload_view 
   div.text-left
-    h3.accent-text.toggle-hidden Payload
+    h3.accent-text.toggle-hidden Payload 
+      if fa_script 
+        i.fal.fa-copy(title="copy payload")
     pre#payload= JSON.stringify(payload, null, 2) 
 
 block token_view 
   div.text-left
-    h3.accent-text.toggle-hidden Token
+    h3.accent-text.toggle-hidden Token 
+      if fa_script 
+        i.fal.fa-copy(title="copy token")
     p#token= token
 
 block content
@@ -42,27 +46,57 @@ block content
                 th Method 
                 th.text-left Description
             tbody
-              tr
+              tr.border.border-success
                 td.text-left /login
-                td POST
+                td 
+                  span.badge.badge-success POST
                 td.text-left Send valid email and password in request body and creates new token. 
-              tr
+              tr.border.border-danger
                 td.text-left /logout
-                td DELETE
+                td 
+                  span.badge.badge-danger DELETE
                 td.text-left Destroys your session and removes token and payload from local storage.
-              tr
+              tr.border.border-primary
                 td.text-left 
                   a(href="/api/token", target="_blank") /api/token
-                td GET
+                td 
+                  span.badge.badge-primary GET
                 td.text-left *Current JSON Web Token.
-              tr
+              tr.border.border-primary
                 td.text-left
                   a(href="/api/payload", target="_blank") /api/payload
-                td GET
+                td 
+                  span.badge.badge-primary GET
                 td.text-left *Payload from decodedToken.
+              tr.border.border-primary
+                td.text-left
+                  a(href="/api/employee", target="_blank") /api/employee
+                td 
+                  span.badge.badge-primary GET
+                td.text-left *Retrieves all data from employees. Can accept query parameters ?limit=1000&orderby=last_name&order=asc.
+              tr.border.border-primary
+                td.text-left /api/employee/emp_no
+                td 
+                  span.badge.badge-primary GET
+                td.text-left *Retrieves single item from employees. 
+              tr.border.border-success
+                td.text-left /api/employee
+                td
+                  span.badge.badge-success POST
+                td.text-left *Inserts new item to employees. If emp_no is passed in the request body then we'll check if exists and update. 
+              tr.border.border-warning
+                td.text-left /api/employee/emp_no
+                td 
+                  span.badge.badge-warning PUT
+                td.text-left *Updates an existing item from employees and returns the updated item in the response. 
+              tr.border.border-danger
+                td.text-left /api/employee/emp_no
+                td 
+                  span.badge.badge-danger DELETE
+                td.text-left *Deletes an item from employees.
             tfoot 
               tr 
-                td.text-left(colspan="3") *Secured route
+                td.text-left(colspan="3") *Secured route with JWT
   
   div.col-12 
     if payload 

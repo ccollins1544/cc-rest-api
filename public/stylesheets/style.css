@@ -704,6 +704,14 @@ section#comment-section.jumbotron {
   font-size: 10px;
 }
 
+#home_page .table td {
+  border-top: none;
+}
+
+#home_page .table th {
+  border-bottom-color: #28a745 !important;
+}
+
 /*------------------------------------------------------*/
 /*--------------[ 4.0 AlertMessages ]-------------------*/
 /*------------------------------------------------------*/

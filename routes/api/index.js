@@ -1,8 +1,11 @@
 const router = require("express").Router();
-const payloadRoute = require("./payloadRoute");
-const tokenRoute = require("./tokenRoute");
+const payloadRouter = require("./payload");
+const tokenRouter = require("./token");
+const employeesRouter = require("./employees");
 
-router.use("/payload", payloadRoute);
-router.use("/token", tokenRoute);
+// Matches with /api/<route>
+router.use("/payload", payloadRouter);
+router.use("/token", tokenRouter);
+router.use("/employee", employeesRouter);
 
 module.exports = router;

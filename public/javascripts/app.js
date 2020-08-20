@@ -5,6 +5,7 @@
  *   1.2 getFormData
  *   1.3 startClock
  *   1.4 validateForm
+ *   1.5 copyToClipboard
  *
  * 2. Document Ready
  *   2.1 Update Home Page Content
@@ -156,6 +157,17 @@ let validateForm = (fieldValue, fieldType = "email", show_alert = true) => {
 
   return isValid;
 };
+
+/**
+ * 1.5 copyToClipboard
+ */
+function copyToClipboard(element) {
+  var $temp = $("<input>");
+  $("body").append($temp);
+  $temp.val($(element).text()).select();
+  document.execCommand("copy");
+  $temp.remove();
+}
 
 /**
  * 2. Document Ready
@@ -490,8 +502,10 @@ $(function () {
   // 2.8 toggle-hidden class
   $(".toggle-hidden").on("click", function () {
     if ($(this).next().length > 0) {
+      copyToClipboard($(this).next());
       $(this).next().toggleClass("hidden");
     } else {
+      copyToClipboard($(this).next());
       $(this).toggleClass("hidden");
     }
   });

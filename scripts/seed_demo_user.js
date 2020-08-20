@@ -38,7 +38,7 @@ const seed_demo_user = async () => {
           console.log("Successfully inserted demo user!".green);
           return 0;
         } else {
-          console.log("Already in database!".green);
+          console.log(demo_user + " Already in database!".green);
           return 1;
         }
       })

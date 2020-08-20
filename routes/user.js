@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const userController = require("../controllers/user");
 const methods = require("../middlewares/jwtStrategy");
+const userController = require("../controllers/user");
 
 // Matches with "/user" POST
 router.route("/").post(userController.create);

@@ -30,6 +30,7 @@ module.exports = function (sequelize, DataTypes) {
       hire_date: {
         type: DataTypes.DATE,
         allowNull: false,
+        defaultValue: Sequelize.NOW,
       },
     },
     {
