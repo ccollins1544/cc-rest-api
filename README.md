@@ -14,7 +14,7 @@ You can see live demo of this project [here](https://ancient-bastion-93975.herok
 
 **NOTE:** Look at the README in the get-started branch for in depth setup of how this app was created.
 
-### 1. Get the code downloaded
+### 1. 💾 Get the code downloaded
 
 - Use the **get-started** branch for a basic version by the git clone command,
 
@@ -34,7 +34,7 @@ git clone --single-branch --branch no-db git@github.com:ccollins1544/cc-rest-api
 git clone --single-branch --branch passport-sequelize git@github.com:ccollins1544/cc-rest-api.git
 ```
 
-### 2. **Set Environment Variables**
+### 2. 👨🏼‍🔬 Set Environment Variables
 
 Create the file `.env` in the root of the project folder `cc-rest-api` and copy and paste this,
 
@@ -69,7 +69,7 @@ MYSQL_TIMEZONE="-06:00"
 
 **NOTE:** You can set these values to whatever you want. See definitions below.
 
-📦 Env Variable Definitions
+### 📦 Env Variable Definitions
 
 | Name           | Description                                                                                                                                                               | DEFAULT          |
 | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------- |
@@ -93,7 +93,7 @@ MYSQL_TIMEZONE="-06:00"
 | MYSQL_PASSWORD | Used for your database connection.                                                                                                                                        |                  |
 | MYSQL_TIMEZONE | Used for your database connection.                                                                                                                                        | "-06:00"         |
 
-### 3. In the project directory, you can run:
+### 3. 👨🏼‍🏫 In the project directory, you can run:
 
 ```shell
 cd cc-rest-api
@@ -107,7 +107,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## 🥑 Usage
 
-#### Employees Model Routes
+### 📘 Employees Model Routes
 
 | Path                 | Method | Description                                                                                                   |
 | :------------------- | ------ | :------------------------------------------------------------------------------------------------------------ |
@@ -119,7 +119,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 **NOTE:** All of these routes are secured with JWT.
 
-#### Misc Routes
+### 📘 Misc Routes
 
 | Path         | Method | Description                                                             |
 | :----------- | ------ | :---------------------------------------------------------------------- |
@@ -130,7 +130,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 | /api/token   | GET    | Current JSON Web Token.                                                 |
 | /api/payload | GET    | Payload from decodedToken.                                              |
 
-**\***Not secured route with JWT. All the rest of these routes are secured with JWT.
+\*Not secured route with JWT. All the rest of these routes are secured with JWT.
 
 ### ⭐ Securing Routes
 
