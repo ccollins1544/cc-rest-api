@@ -215,7 +215,7 @@ let Func = {
           if (response) {
             console.log("Successfully inserted demo user!".green);
           } else {
-            console.log("Already in database!".green);
+            console.log(demo_user + " Already in database!".green);
           }
         })
         .catch((err) => {

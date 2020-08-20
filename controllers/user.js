@@ -37,7 +37,7 @@ module.exports = {
     });
   },
 
-  login: (req, res, next) => {
+  login: async (req, res, next) => {
     // NOTE: password and token should have already been verified before reaching this function
     let { email } = req.body;
     if (!email) {
@@ -51,7 +51,7 @@ module.exports = {
     let { token } = req.session;
     if (!token) {
       if ("token" in req.body) {
-        token = req.body.token;
+        token = req.body.token.toString();
       } else if ("authorization" in req.headers) {
         token = req.headers.authorization.split(" ")[1].toString();
       }
@@ -68,8 +68,20 @@ module.exports = {
     }
 
     let { logged_in } = req.session;
+    let last_used_token = await db.User.findOne({
+      attributes: ["last_used_token"],
+      where: {
+        email: email,
+      },
+    }).then((dbModel) => {
+      if (dbModel) {
+        return dbModel.dataValues.last_used_token.toString();
+      }
 
-    if (!logged_in) {
+      return null;
+    });
+
+    if (!logged_in || last_used_token != token) {
       db.User.update(
         { last_used_token: token },
         {
@@ -141,9 +153,5 @@ module.exports = {
 
       return db.User.create(values);
     });
-  },
-
-  test: (req, res) => {
-    res.status(200).json(req.body);
   },
 };
