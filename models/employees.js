@@ -1,45 +1,29 @@
-const Sequelize = require("sequelize");
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-module.exports = function (sequelize, DataTypes) {
-  var employees = sequelize.define(
-    "employees",
-    {
-      emp_no: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      birth_date: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
-      first_name: {
-        type: DataTypes.STRING(14),
-        allowNull: false,
-      },
-      last_name: {
-        type: DataTypes.STRING(16),
-        allowNull: false,
-      },
-      gender: {
-        type: Sequelize.ENUM,
-        values: ["M", "F"],
-        allowNull: false,
-      },
-      hire_date: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.NOW,
-      },
+const employeeSchema = new Schema(
+  {
+    emp_no: String,
+    birth_date: Date,
+    first_name: String,
+    last_name: String,
+    gender: String,
+    hire_date: {
+      type: Date,
+      default: Date.now,
     },
-    {
-      timestamps: false,
-      freezeTableName: true,
-      underscored: true,
-      modelName: "employees",
-    },
-  );
+  },
+  {
+    timestamps: false,
+  },
+);
 
-  return employees;
-};
+employeeSchema.pre("save", function (next) {
+  if (!this.emp_no) {
+    this.emp_no = this._id;
+  }
+  next();
+});
+
+const Employees = mongoose.model("Employees", employeeSchema);
+module.exports = Employees;

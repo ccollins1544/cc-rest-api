@@ -16,6 +16,8 @@ for (var k in envConfig) {
 const createError = require("http-errors");
 const express = require("express");
 const session = require("express-session");
+const dbConnection = require("./models/connection.js"); // Connects to db
+const MongoStore = require("connect-mongo")(session);
 const passport = require("./middlewares/passport");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -40,12 +42,13 @@ let cookieExpirationTime = new Date();
 let time = cookieExpirationTime.getTime();
 let seconds = 3600; // 1 hour
 
-time += process.env.EXPIRATION || seconds * 1000; // convert seconds to milliseconds
+time += parseInt(process.env.EXPIRATION) || seconds * 1000; // convert seconds to milliseconds
 cookieExpirationTime.setTime(time);
 
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "SuperSecretSession",
+    store: new MongoStore({ mongooseConnection: dbConnection }),
     resave: false,
     saveUninitialized: false,
     cookie: {

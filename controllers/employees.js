@@ -15,62 +15,54 @@ module.exports = {
       orderby = "last_name";
     }
 
-    if (order === undefined) {
-      order = "ASC";
+    if (order === undefined || order.toLowerCase() === "asc") {
+      order = 1;
+    } else {
+      order = -1;
     }
 
-    db.employees
-      .findAll({
-        order: [[orderby, order]],
-        limit: parseInt(limit),
+    db.Employees.find({})
+      .sort({
+        [orderby]: order,
       })
-      .then((dbModel) => res.json(dbModel))
-      .catch((err) => res.status(422).json(err));
+      .limit(parseInt(limit))
+      .exec((err, dbModel) => {
+        if (err) res.status(422).json(err);
+        res.status(200).json(dbModel);
+      });
   },
 
   findByEmpNo: (req, res) => {
     let condition = { emp_no: req.params.emp_no };
-    db.employees
-      .findOne({
-        where: condition,
-      })
+    db.Employees.findOne(condition)
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
   },
 
   put: async (req, res) => {
     let condition = { emp_no: req.params.emp_no };
-    let results = await db.employees
-      .findOne({
-        where: condition,
-      })
-      .then((dbModel) => {
-        if (dbModel) {
-          return dbModel.update(req.body);
-        }
-
-        return res.status(400).send({
-          ok: false,
-          message: "Can't find that employee.",
-        });
-      });
+    let results = await db.Employees.findOneAndUpdate(
+      condition,
+      {
+        $set: req.body,
+      },
+      {
+        returnOriginal: false,
+      },
+    );
 
     res.status(200).json(results);
   },
 
   create: (req, res) => {
     if (req.body.emp_no === undefined || Object.keys(req.body).length <= 1) {
-      return db.employees
-        .create(req.body)
+      return db.Employees.create(req.body)
         .then((dbModel) => res.status(200).json(dbModel))
         .catch((err) => res.status(422).json(err));
     }
 
     let condition = { emp_no: req.body.emp_no };
-    db.employees
-      .findOne({
-        where: condition,
-      })
+    db.Employees.findOne(condition)
       .then((dbModel) => {
         if (dbModel) {
           return res.status(400).send({
@@ -80,8 +72,7 @@ module.exports = {
           });
         }
 
-        return db.employees
-          .create(req.body)
+        return db.Employees.create(req.body)
           .then((dbModel) => res.status(200).json(dbModel))
           .catch((err) => res.status(422).json(err));
       })
@@ -89,53 +80,49 @@ module.exports = {
   },
 
   upsert: async (values, condition) => {
-    return await db.employees
-      .findOne({
-        where: condition,
-      })
-      .then((dbModel) => {
-        if (dbModel) {
-          return dbModel.update(values);
-        }
-
-        return db.employees.create(values);
-      });
+    return await db.Employees.updateOne(
+      condition,
+      {
+        $set: values,
+      },
+      { upsert: true },
+    )
+      .then((EmployeesModel) => res.json(EmployeesModel))
+      .catch((err) => res.status(422).json(err));
   },
 
   insert: (values, condition) => {
-    return db.employees
-      .findOne({
-        where: condition,
-      })
-      .then((dbModel) => {
-        if (dbModel) {
-          console.log("Already in database.");
-          return;
-        }
+    return db.Employees.findOne(condition).then((dbModel) => {
+      if (dbModel) {
+        console.log("Already in database.");
+        return;
+      }
 
-        return db.employees.create(values);
-      });
+      return db.Employees.create(values);
+    });
   },
 
   delete: (req, res) => {
     let condition = { emp_no: req.params.emp_no };
-    db.employees
-      .destroy({
-        where: condition,
-      })
-      .then((dbModel) => {
-        if (dbModel) {
-          res.status(200).send({
-            ok: true,
-            message: `emp_no ${req.params.emp_no} has been deleted.`,
-          });
-        }
 
-        res.status(404).send({
-          ok: false,
-          message: `emp_no ${req.params.emp_no} doesn't exists.`,
+    db.Employees.deleteOne(condition, (err, dbModel) => {
+      if (err) {
+        res.status(422).json(err);
+        return;
+      }
+
+      if (dbModel) {
+        res.status(200).send({
+          ok: true,
+          message: `emp_no ${req.params.emp_no} has been deleted.`,
         });
-      })
-      .catch((err) => res.status(422).json(err));
+        return;
+      }
+
+      res.status(404).send({
+        ok: false,
+        message: `emp_no ${req.params.emp_no} doesn't exists.`,
+      });
+    });
   },
 };

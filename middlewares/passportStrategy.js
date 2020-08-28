@@ -9,7 +9,7 @@ const strategy = new LocalStrategy(
   },
   function (req, email, password, done) {
     db.User.findOne({
-      where: { email: email },
+      email: email,
     }).then((dbUser) => {
       if (!dbUser) {
         return done(null, false, {

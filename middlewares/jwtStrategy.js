@@ -69,6 +69,7 @@ const validateAccessToken = (req, res, next) => {
       req.session.payload = null;
       req.session.logged_in = false;
 
+      console.log("Token was provided but was invalid");
       return res.status(403).send({
         ok: false,
         error: err,
@@ -114,7 +115,7 @@ const createAccessToken = (req, res, next) => {
     subject: process.env.SUBJECT || "cc-rest-api",
     audience:
       process.env.AUDIENCE || "https://ancient-bastion-93975.herokuapp.com/",
-    expiresIn: process.env.EXPIRATION || "1h",
+    expiresIn: parseInt(process.env.EXPIRATION) || "1h",
     algorithm: "RS256",
   };
 

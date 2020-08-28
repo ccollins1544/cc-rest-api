@@ -1,62 +1,29 @@
 "use strict";
-
 const fs = require("fs");
 const path = require("path");
-const Sequelize = require("sequelize");
 const basename = path.basename(module.filename);
 const env = process.env.NODE_ENV || "development";
-const config = require("../config/")[env];
-const db = {};
-
-if (config.use_env_variable) {
-  var sequelize = new Sequelize(process.env[config.use_env_variable]);
-} else {
-  var sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config,
-  );
-}
-
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Connection to MySQL has been established successfully.");
-  })
-  .catch((err) => {
-    console.error("Unable to connect to the database:", err);
-  });
+const exclude_files = ["connection.js"];
+let db = {};
 
 fs.readdirSync(__dirname)
-  .filter((file) => {
+  .filter(function (file) {
     return (
-      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
+      file.indexOf(".") !== 0 &&
+      file !== basename &&
+      file.slice(-3) === ".js" &&
+      exclude_files.includes(file) === false
     );
   })
-  .forEach((file) => {
-    // ERROR HERE
-    // var model = sequelize.import(path.join(__dirname, file));
+  .forEach(function (file) {
+    // Get the model name from the file name
+    const modelName = file.match(/(.*)\.js/)[1];
 
-    // for individual model files having `export default (sequelize, DataTypes) => {`
-    // const model = require(path.join(__dirname, file)).default(sequelize, Sequelize.DataTypes);
+    const model =
+      modelName.toString().charAt(0).toUpperCase() +
+      modelName.toString().toLowerCase().slice(1);
 
-    // for individual model files having `module.exports = (sequelize, DataTypes) => {`
-    const model = require(path.join(__dirname, file))(
-      sequelize,
-      Sequelize.DataTypes,
-    );
-
-    db[model.name] = model;
+    db = { ...db, [model]: require(path.join(__dirname, file)) };
   });
-
-Object.keys(db).forEach(function (modelName) {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
-
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
 
 module.exports = db;
