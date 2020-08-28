@@ -12,7 +12,7 @@ const seed_employees = async () => {
     console.log("Deleting employees".red);
     console.log("_________________________________________________".red);
 
-    await db.employees.destroy({ truncate: true, cascade: false });
+    await db.Employees.deleteMany({});
 
     for (let property in employees_json) {
       if (Array.isArray(employees_json[property])) {
@@ -32,9 +32,17 @@ const seed_employees = async () => {
         for (i = 0, j = employees_json[property].length; i < j; i += chunk) {
           temparray = employees_json[property].slice(i, i + chunk);
 
-          await db.employees
-            .bulkCreate(temparray, { returning: true, raw: true })
-            .then((response) => {
+          await db.Employees.insertMany(temparray, (error, response) => {
+            if (error) {
+              console.log(
+                "_________________________________________________".red,
+              );
+              console.log("Failed!".red);
+              console.log(error);
+              console.log(
+                "_________________________________________________".red,
+              );
+            } else {
               console.log(
                 "_________________________________________________".green,
               );
@@ -47,17 +55,8 @@ const seed_employees = async () => {
               console.log(
                 "_________________________________________________".green,
               );
-            })
-            .catch((error) => {
-              console.log(
-                "_________________________________________________".red,
-              );
-              console.log("Failed!".red);
-              console.log(error);
-              console.log(
-                "_________________________________________________".red,
-              );
-            });
+            }
+          });
 
           if (i === j - chunk) {
             console.log(

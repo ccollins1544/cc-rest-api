@@ -19,6 +19,10 @@ router.get(
   methods.validateAccessToken,
   userController.login,
   (req, res, next) => {
+    if (process.env.DEBUG !== undefined && process.env.DEBUG == "true") {
+      console.log("SESSION", req.session);
+    }
+
     let jadeProps = {
       site_title: "CC REST API",
       page_title: "Home",

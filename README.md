@@ -28,10 +28,16 @@ git clone --single-branch --branch get-started git@github.com:ccollins1544/cc-re
 git clone --single-branch --branch no-db git@github.com:ccollins1544/cc-rest-api.git
 ```
 
-- Use the **passport-sequelize** branch for user authentication with passport and a CRUD API for the employee model by the git clone command,
+- Use the **passport-sequelize** branch for user authentication with MySQL CRUD API for the employee model by the git clone command,
 
 ```shell
 git clone --single-branch --branch passport-sequelize git@github.com:ccollins1544/cc-rest-api.git
+```
+
+- Use the **passport-mongoose** branch for user authentication with MongoDB CRUD API for the employee model by the git clone command,
+
+```shell
+git clone --single-branch --branch passport-mongoose git@github.com:ccollins1544/cc-rest-api.git
 ```
 
 ### 2. 👨🏼‍🔬 Set Environment Variables
@@ -42,7 +48,7 @@ Create the file `.env` in the root of the project folder `cc-rest-api` and copy 
 # Main Env Variables
 NODE_ENV=test
 DOTENV_LOADED=true
-FA_SCRIPT=
+#FA_SCRIPT=
 
 # JWT Variables
 DEBUG=false
@@ -62,9 +68,12 @@ SEED_EMPLOYEES=false
 MYSQL_HOST=localhost
 MYSQL_PORT=3306
 MYSQL_DATABASE=cc_rest_api
-MYSQL_USER=
-MYSQL_PASSWORD=
+#MYSQL_USER=
+#MYSQL_PASSWORD=
 MYSQL_TIMEZONE="-06:00"
+
+# MongoDB
+#MONGODB_URI=
 ```
 
 **NOTE:** You can set these values to whatever you want. See definitions below.
@@ -92,6 +101,7 @@ MYSQL_TIMEZONE="-06:00"
 | MYSQL_USER     | Used for your database connection.                                                                                                                                        |                  |
 | MYSQL_PASSWORD | Used for your database connection.                                                                                                                                        |                  |
 | MYSQL_TIMEZONE | Used for your database connection.                                                                                                                                        | "-06:00"         |
+| MONGODB_URI    | Used for your Mongo database connection. Keep commented with # if you're not using mongodb (and vise versa for all the MYSQL variables)                                   |                  |
 
 ### 3. 👨🏼‍🏫 In the project directory, you can run:
 

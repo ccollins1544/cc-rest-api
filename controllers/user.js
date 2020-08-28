@@ -6,10 +6,7 @@ module.exports = {
     const { email, password } = req.body;
 
     let userRecord = await db.User.findOne({
-      where: {
-        email: email,
-      },
-      limit: 1,
+      email: email,
     }).catch((err) => {
       console.log(`Error while fetching user email ${email}`, err);
     });
@@ -68,42 +65,40 @@ module.exports = {
     }
 
     let { logged_in } = req.session;
-    let last_used_token = await db.User.findOne({
-      attributes: ["last_used_token"],
-      where: {
-        email: email,
-      },
-    }).then((dbModel) => {
-      if (dbModel) {
-        return dbModel.dataValues.last_used_token.toString();
+    let last_used_token = await db.User.findOne(
+      { email: email },
+      { last_used_token: 1 },
+    ).then((dbModel) => {
+      if (dbModel.last_used_token) {
+        return dbModel.last_used_token.toString();
       }
 
       return null;
     });
 
     if (!logged_in || last_used_token != token) {
-      db.User.update(
-        { last_used_token: token },
+      await db.User.findOneAndUpdate(
+        { email: email },
         {
-          where: {
-            email: email,
+          $set: {
+            last_used_token: token,
           },
         },
-      ).then((dbRecord) => {
-        req.session.logged_in = true;
+      );
 
-        if (req.method == "POST") {
-          return res.status(200).send({
-            ok: true,
-            message: "Login successful",
-            email: email,
-            token: token,
-            logged_in: true,
-          });
-        }
+      req.session.logged_in = true;
 
-        next();
-      });
+      if (req.method == "POST") {
+        return res.status(200).send({
+          ok: true,
+          message: "Login successful",
+          email: email,
+          token: token,
+          logged_in: true,
+        });
+      }
+
+      return next();
     }
 
     if (req.method == "POST") {
@@ -120,32 +115,27 @@ module.exports = {
   },
 
   findById: (req, res) => {
-    db.User.findOne({
-      attributes: ["email"],
-      where: {
-        id: req.params.user_id,
-      },
-    })
+    db.User.findOne({ id: req.params.user_id }, { email: 1 })
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
   },
 
   upsert: (values, condition) => {
-    return db.User.findOne({
-      where: condition,
-    }).then((dbModel) => {
-      if (dbModel) {
-        return dbModel.update(values);
-      }
-
-      return db.User.create(values);
-    });
+    return db.User.updateOne(
+      condition,
+      {
+        $set: values,
+      },
+      { upsert: true },
+    )
+      .then((userModel) => res.json(userModel))
+      .catch((err) => res.status(422).json(err));
   },
 
   insert: (values, condition) => {
-    return db.User.findOne({
-      where: condition,
-    }).then((dbModel) => {
+    // return db.User.create(values);
+
+    return db.User.findOne(condition).then((dbModel) => {
       if (dbModel) {
         console.log("Already in database.");
         return;
