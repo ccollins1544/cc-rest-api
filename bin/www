@@ -33,14 +33,6 @@ if (process.env.NODE_ENV === "development") {
   syncOptions.force = true;
 }
 
-/*
-db.sequelize.sync(syncOptions).then(function () {
-  server.listen(port, function () {
-    console.log(`🌎 ==> API Server now listening on PORT ${port}!`);
-  });
-}); 
-*/
-
 server.listen(port, function () {
   console.log(`🌎 ==> API Server now listening on PORT ${port}!`);
 });
