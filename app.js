@@ -40,7 +40,7 @@ let cookieExpirationTime = new Date();
 let time = cookieExpirationTime.getTime();
 let seconds = 3600; // 1 hour
 
-time += process.env.EXPIRATION || seconds * 1000; // convert seconds to milliseconds
+time += parseInt(process.env.EXPIRATION) || seconds * 1000; // convert seconds to milliseconds
 cookieExpirationTime.setTime(time);
 
 app.use(

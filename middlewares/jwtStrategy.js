@@ -114,7 +114,7 @@ const createAccessToken = (req, res, next) => {
     subject: process.env.SUBJECT || "cc-rest-api",
     audience:
       process.env.AUDIENCE || "https://ancient-bastion-93975.herokuapp.com/",
-    expiresIn: process.env.EXPIRATION || "1h",
+    expiresIn: parseInt(process.env.EXPIRATION) || "1h",
     algorithm: "RS256",
   };
 
