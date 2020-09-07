@@ -1,3 +1,4 @@
+const env = process.env.NODE_ENV || "development";
 const express = require("express");
 const router = express.Router();
 
@@ -14,6 +15,10 @@ router
     userController.login,
   )
   .get((req, res, next) => {
+    if (env !== "production") {
+      console.log("SESSION", req.session);
+    }
+
     let jadeProps = {
       site_title: "CC REST API",
       page_title: "Login",

@@ -1,9 +1,10 @@
 /* ===============[ Dependencies  ]========================*/
 const path = require("path");
 const fs = require("fs");
+const env = process.env.NODE_ENV || "development";
 require("dotenv").config({
   path: path.resolve(__dirname, ".env"),
-  debug: process.env.DEBUG,
+  debug: (env !== "production") ? true : false,
 });
 
 const envConfig = fs.existsSync(".env.override")

@@ -1,3 +1,4 @@
+const env = process.env.NODE_ENV || "development";
 const express = require("express");
 const router = express.Router();
 const methods = require("../middlewares/jwtStrategy");
@@ -19,6 +20,10 @@ router.get(
   methods.validateAccessToken,
   userController.login,
   (req, res, next) => {
+    if (env !== "production") {
+      console.log("SESSION", req.session);
+    }
+
     let jadeProps = {
       site_title: "CC REST API",
       page_title: "Home",

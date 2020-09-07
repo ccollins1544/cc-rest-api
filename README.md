@@ -41,11 +41,11 @@ Create the file `.env` in the root of the project folder `cc-rest-api` and copy 
 ```shell
 # Main Env Variables
 NODE_ENV=test
+DEBUG=cc-rest-api:*
 DOTENV_LOADED=true
 FA_SCRIPT=
 
 # JWT Variables
-DEBUG=false
 ISSUER=demo-issuer
 SUBJECT=demo-subject
 AUDIENCE=demo-audience
@@ -99,9 +99,9 @@ MYSQL_TIMEZONE="-06:00"
 cd cc-rest-api
 ```
 
-#### `DEBUG=cc-rest-api:* nodemon`
+#### `nodemon`
 
-#### `DEBUG=cc-rest-api:* npm start`
+#### `npm start`
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
