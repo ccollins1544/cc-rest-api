@@ -1,4 +1,5 @@
 process.env.DOTENV_LOADED || require("dotenv").config();
+const env = process.env.NODE_ENV || "development";
 const fs = require("fs");
 const path = require("path");
 const jwt = require("jsonwebtoken");
@@ -19,7 +20,7 @@ const validateAccessToken = (req, res, next) => {
     try {
       let publicKey = fs.readFileSync("public.pem", "utf8");
       let decodedToken = jwt.decode(token, { complete: true });
-      if (process.env.DEBUG !== undefined) {
+      if (env !== "production") {
         console.log("token:", token);
         console.log("decodedToken:", JSON.stringify(decodedToken, null, 2));
       }
@@ -50,7 +51,7 @@ const validateAccessToken = (req, res, next) => {
             message: "Failed to verify token",
           });
         } else {
-          if (process.env.DEBUG !== undefined) {
+          if (env !== "production") {
             console.log("Verified:", JSON.stringify(result, null, 2));
           }
 
@@ -106,7 +107,7 @@ const createAccessToken = (req, res, next) => {
     email: email,
   };
 
-  if (process.env.DEBUG !== undefined) {
+  if (env !== "production") {
     console.log("Payload: " + JSON.stringify(payload, null, 2));
   }
 
@@ -115,7 +116,7 @@ const createAccessToken = (req, res, next) => {
     subject: process.env.SUBJECT || "cc-rest-api",
     audience:
       process.env.AUDIENCE || "https://ancient-bastion-93975.herokuapp.com/",
-    expiresIn: parseInt(process.env.EXPIRATION) || "1h",
+    expiresIn: parseInt(process.env.EXPIRATION) / 1000 || "1h", // raw integer must be in seconds 
     algorithm: "RS256",
   };
 

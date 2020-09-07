@@ -109,9 +109,9 @@ MYSQL_TIMEZONE="-06:00"
 cd cc-rest-api
 ```
 
-#### `DEBUG=cc-rest-api:* nodemon`
+#### `nodemon`
 
-#### `DEBUG=cc-rest-api:* npm start`
+#### `npm start`
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
