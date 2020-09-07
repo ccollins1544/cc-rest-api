@@ -19,7 +19,7 @@ const validateAccessToken = (req, res, next) => {
     try {
       let publicKey = fs.readFileSync("public.pem", "utf8");
       let decodedToken = jwt.decode(token, { complete: true });
-      if (process.env.DEBUG !== undefined && process.env.DEBUG == "true") {
+      if (process.env.DEBUG !== undefined) {
         console.log("token:", token);
         console.log("decodedToken:", JSON.stringify(decodedToken, null, 2));
       }
@@ -50,7 +50,7 @@ const validateAccessToken = (req, res, next) => {
             message: "Failed to verify token",
           });
         } else {
-          if (process.env.DEBUG !== undefined && process.env.DEBUG == "true") {
+          if (process.env.DEBUG !== undefined) {
             console.log("Verified:", JSON.stringify(result, null, 2));
           }
 
@@ -106,7 +106,7 @@ const createAccessToken = (req, res, next) => {
     email: email,
   };
 
-  if (process.env.DEBUG !== undefined && process.env.DEBUG == "true") {
+  if (process.env.DEBUG !== undefined) {
     console.log("Payload: " + JSON.stringify(payload, null, 2));
   }
 

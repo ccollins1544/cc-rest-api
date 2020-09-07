@@ -19,7 +19,7 @@ router.get(
   methods.validateAccessToken,
   userController.login,
   (req, res, next) => {
-    if (process.env.DEBUG !== undefined && process.env.DEBUG == "true") {
+    if (process.env.DEBUG !== undefined) {
       console.log("SESSION", req.session);
     }
 

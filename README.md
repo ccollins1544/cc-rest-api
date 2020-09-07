@@ -48,10 +48,10 @@ Create the file `.env` in the root of the project folder `cc-rest-api` and copy 
 # Main Env Variables
 NODE_ENV=test
 DOTENV_LOADED=true
+DEBUG=cc-rest-api:*
 #FA_SCRIPT=
 
 # JWT Variables
-DEBUG=false
 ISSUER=demo-issuer
 SUBJECT=demo-subject
 AUDIENCE=demo-audience
