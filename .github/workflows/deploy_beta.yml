@@ -1,0 +1,27 @@
+name: Deploy Beta
+
+on:
+  push:
+    branches: [ beta ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            pm2 stop cc_rest_api_beta
+            cd ~/domains/node.ccollins.io/public_html/cc_rest_api_beta/source
+            git pull 
+            npm install 
+            node --trace-warnings scripts/init.js
+            pm2 start ~/domains/node.ccollins.io/public_html/ecosystem.config.js --only cc_rest_api_beta --env development
+
+
+
