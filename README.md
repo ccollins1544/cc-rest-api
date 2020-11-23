@@ -44,6 +44,7 @@ NODE_ENV=test
 DEBUG=cc-rest-api:*
 DOTENV_LOADED=true
 FA_SCRIPT=
+OVERRIDE_LOGIN=false
 
 # JWT Variables
 ISSUER=demo-issuer
@@ -52,6 +53,7 @@ AUDIENCE=demo-audience
 MAX_AGE=3600000
 EXPIRATION=3600000
 SESSION_SECRET=secret-goes-here
+SECRET_KEY="---32-character-key-goes-here---"
 
 # DB Seed Variables
 DEMO_USER=demo

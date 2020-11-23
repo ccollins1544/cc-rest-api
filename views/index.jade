@@ -3,16 +3,16 @@ extends layout
 block payload_view 
   div.text-left
     h3.accent-text.toggle-hidden Payload 
-      if fa_script 
+      if (locals.fa_script)
         i.fal.fa-copy(title="copy payload")
-    pre#payload= JSON.stringify(payload, null, 2) 
+    pre#payload= JSON.stringify(locals.payload, null, 2) 
 
 block token_view 
   div.text-left
     h3.accent-text.toggle-hidden Token 
-      if fa_script 
+      if (locals.fa_script)
         i.fal.fa-copy(title="copy token")
-    p#token= token
+    p#token= locals.token
 
 block content
   div.col-12.mb-3
@@ -21,20 +21,20 @@ block content
         strong#clock Loading ...
       li.list-group-item.list-group-item-primary
         strong IssuedAt: 
-        span#iat #{payload.iat}
+        span#iat #{locals.payload.iat}
       li.list-group-item.list-group-item-primary
         strong Expires: 
-        span#exp #{payload.exp}
+        span#exp #{locals.payload.exp}
       li.list-group-item.list-group-item-primary
         strong Time Remaining: 
-        - var time_remaining = (exp - iat) / 60 
+        - var time_remaining = (locals.payload.exp - locals.payload.iat) / 60 
         span#time_remaining #{time_remaining} minutes
 
     div.row.section-block
       div.card.bg-dark.col-12.pb-3
         div.card-header.text-white.d-flex.justify-content-between 
           div
-            if fa_script 
+            if (locals.fa_script)
               i.fas.fas.fa-server.mr-2
             span Employees Model Routes
           
@@ -79,7 +79,7 @@ block content
       div.card.bg-dark.col-12.pb-3
         div.card-header.text-white.d-flex.justify-content-between 
           div
-            if fa_script 
+            if (locals.fa_script)
               i.fas.fas.fa-server.mr-2
             span Misc Routes
           
@@ -130,9 +130,9 @@ block content
                 td.text-left(colspan="3") *Not secured route with JWT. All the rest of these routes are secured with JWT.
   
   div.col-12 
-    if payload 
+    if (locals.payload)
       block payload_view
     
-    if token
+    if (locals.token)
       block token_view
 

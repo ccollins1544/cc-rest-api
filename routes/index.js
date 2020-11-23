@@ -21,7 +21,9 @@ router.get(
   userController.login,
   (req, res, next) => {
     if (env !== "production") {
-      console.log("SESSION", req.session);
+      console.log("__________ SESSION __________".yellow)
+      console.log(req.session);
+      console.log("_____________________________".yellow)
     }
 
     let jadeProps = {

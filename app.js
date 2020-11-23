@@ -2,10 +2,11 @@
 const path = require("path");
 const fs = require("fs");
 const env = process.env.NODE_ENV || "development";
-require("dotenv").config({
-  path: path.resolve(__dirname, ".env"),
-  debug: (env !== "production") ? true : false,
-});
+require("dotenv").config(); // Set up all environment variables
+// require("dotenv").config({
+//   path: path.resolve(__dirname, ".env"),
+//   debug: (env !== "production") ? true : false,
+// });
 
 const envConfig = fs.existsSync(".env.override")
   ? require("dotenv").parse(fs.readFileSync(".env.override"))
@@ -14,21 +15,28 @@ for (var k in envConfig) {
   process.env[k] = envConfig[k];
 }
 
-const createError = require("http-errors");
+/* ===============[ Express ]================================*/
 const express = require("express");
+const createError = require("http-errors");
+
+/* ===============[ Middlewares ]================================*/
 const session = require("express-session");
 const passport = require("./middlewares/passport");
+
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
-const utils = require("./utils");
 const colors = require("colors");
+const utils = require("./utils");
 
 const app = express();
 
 /* ===============[ view engine setup ]=======================*/
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
+// app.set('view options', {
+//   layout: true
+// });
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -52,6 +60,7 @@ app.use(
     cookie: {
       httpOnly: true,
       expires: cookieExpirationTime,
+      // maxAge: parseInt(process.env.EXPIRATION) || seconds * 1000
     },
   }),
 );

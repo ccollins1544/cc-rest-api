@@ -4,14 +4,14 @@ block content
   div.col-lg-12.mx-auto
     div.card.bg-dark
       div.card-header
-        h2= page_title
+        h2= locals.page_title
         span#clock.text-white
       div.card-body.bg-dark
-        if logged_in 
-          p.text-white Hi #{email}! Looks like you're already logged in!
+        if (locals.logged_in)
+          p.text-white Hi #{locals.email}! Looks like you're already logged in!
           a(href="/")
             button.btn.btn-dark
-              if fa_script 
+              if (locals.fa_script)
                 i.fas.fa-home
               else 
                 | Home 
@@ -32,9 +32,9 @@ block content
             div.form-group.row
               span.col-sm-12.input-group-btn.text-right 
                 button.btn.btn-dark.form-input(type="submit")
-                  if fa_script 
+                  if (locals.fa_script)
                     i.fas.fa-user
-                  |  #{page_title}
+                  |  #{locals.page_title}
             div.form-group.row 
               p.col-12.text-white Dont have an account? 
                 a#toggle_signup.accent-text Sign Up

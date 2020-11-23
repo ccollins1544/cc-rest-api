@@ -1,23 +1,23 @@
 block footer 
-  footer#main-footer(data-payload=(payload ? JSON.stringify(payload) : "{}"), data-token=(token ? token : " ") data-demo_user=(demo_user))
+  footer#main-footer(data-payload=(locals.payload ? JSON.stringify(locals.payload) : "{}"), data-token=(locals.token ? locals.token : " "), data-demo_user=(locals.demo_user))
     nav.navbar.navbar-expand-lg.navbar-dark.bg-dark#footer-nav
       div.navbar-collapse 
         ul.navbar-nav 
           li.nav-item 
             a.nav-link(href="https://www.linkedin.com/in/ccollins1544/", target="_blank", rel="noopener noreferrer")
-              if fa_script 
+              if (locals.fa_script)
                 i.fab.fa-linkedin.fa-2x
               else 
                 | LinkedIn
           li.nav-item 
             a.nav-link(href="https://dev.to/ccollins", target="_blank", rel="noopener noreferrer")
-              if fa_script 
+              if (locals.fa_script)
                 i.fab.fa-dev.fa-2x
               else 
                 | DevTo
           li.nav-item 
             a.nav-link(href="https://github.com/ccollins1544/cc-rest-api", target="_blank", rel="noopener noreferrer")
-              if fa_script 
+              if (locals.fa_script)
                 i.fab.fa-github.fa-2x
               else 
                 | GitHub
@@ -31,9 +31,9 @@ block footer
           =app_name 
           | 
           =app_version
-        a.footer-link(href="https://github.com/ccollins1544/cc-rest-api", target="_blank" rel="noopener noreferrer")
+        a.footer-link(href="https://github.com/ccollins1544/cc-rest-api", target="_blank", rel="noopener noreferrer")
           |  
-          if fa_script 
+          if (locals.fa_script)
             i.fad.fa-brackets-curly
 
 

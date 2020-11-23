@@ -4,11 +4,46 @@ const fs = require("fs");
 const path = require("path");
 const jwt = require("jsonwebtoken");
 
+// =========================[ config ]=========================
+const jwt_config = {
+  development: {
+    issuer: process.env.ISSUER || "beta",
+    subject: process.env.SUBJECT || require("../package.json").name,
+    audience: process.env.AUDIENCE || "http://localhost:3000",
+    expiresIn: parseInt(process.env.EXPIRATION) / 1000 || "1h", // raw integer must be in seconds 
+    algorithm: "RS256",
+    passphrase: process.env.SESSION_SECRET || "SuperSecretSession"
+  },
+  test: {
+    issuer: process.env.ISSUER || "beta",
+    subject: process.env.SUBJECT || require("../package.json").name,
+    audience: process.env.AUDIENCE || "http://localhost:3000",
+    expiresIn: parseInt(process.env.EXPIRATION) / 1000 || "1h", // raw integer must be in seconds 
+    algorithm: "RS256",
+    passphrase: process.env.SESSION_SECRET || "SuperSecretSession"
+  },
+  production: {
+    issuer: process.env.ISSUER || "beta",
+    subject: process.env.SUBJECT || require("../package.json").name,
+    audience: process.env.AUDIENCE || "http://localhost:3000",
+    expiresIn: parseInt(process.env.EXPIRATION) / 1000 || "1h", // raw integer must be in seconds 
+    algorithm: "RS256",
+    passphrase: process.env.SESSION_SECRET || "SuperSecretSession"
+  }
+};
+
+const config = jwt_config[env];
+
 // ========================[ validateAccessToken ]==================================
 const validateAccessToken = (req, res, next) => {
+  if (process.env.OVERRIDE_LOGIN !== undefined && process.env.OVERRIDE_LOGIN === "true") {
+    return next();
+  }
+
   // Pull token from header or session
   const { authorization } = req.headers;
   let token = "";
+
   if (typeof authorization !== "undefined") {
     token = authorization.split(" ")[1].toString();
   } else if (req.session.token !== "undefined") {
@@ -20,6 +55,7 @@ const validateAccessToken = (req, res, next) => {
     try {
       let publicKey = fs.readFileSync("public.pem", "utf8");
       let decodedToken = jwt.decode(token, { complete: true });
+
       if (env !== "production") {
         console.log("token:", token);
         console.log("decodedToken:", JSON.stringify(decodedToken, null, 2));
@@ -45,11 +81,13 @@ const validateAccessToken = (req, res, next) => {
           req.session.payload = null;
           req.session.logged_in = false;
 
+          console.log("Failed to verify token!".red);
           return res.status(403).send({
             ok: false,
             error: err,
             message: "Failed to verify token",
           });
+
         } else {
           if (env !== "production") {
             console.log("Verified:", JSON.stringify(result, null, 2));
@@ -70,6 +108,7 @@ const validateAccessToken = (req, res, next) => {
       req.session.payload = null;
       req.session.logged_in = false;
 
+      console.log("Token was provided but was invalid!".red);
       return res.status(403).send({
         ok: false,
         error: err,
@@ -106,22 +145,20 @@ const createAccessToken = (req, res, next) => {
     email: email,
   };
 
-  if (env !== "production") {
-    console.log("Payload: " + JSON.stringify(payload, null, 2));
-  }
-
   let signOptions = {
-    issuer: process.env.ISSUER || "Heroku",
-    subject: process.env.SUBJECT || "cc-rest-api",
-    audience:
-      process.env.AUDIENCE || "https://ancient-bastion-93975.herokuapp.com/",
-    expiresIn: parseInt(process.env.EXPIRATION) / 1000 || "1h", // raw integer must be in seconds 
-    algorithm: "RS256",
+    issuer: config.issuer,
+    subject: config.subject,
+    audience: config.audience,
+    expiresIn: config.expiresIn,
+    algorithm: config.algorithm,
   };
 
   jwt.sign(
     payload,
-    { key: privateKey, passphrase: "" },
+    {
+      key: privateKey,
+      passphrase: config.passphrase
+    },
     signOptions,
     (err, token) => {
       if (err) {

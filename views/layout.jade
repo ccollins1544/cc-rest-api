@@ -1,21 +1,21 @@
 doctype html
 html
   head
-    title #{site_title} | #{page_title}
-    link(rel='icon', href='/images/icons8-rock-and-roll-hand-32.png')
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title #{locals.site_title} | #{locals.page_title}
+    link(rel='icon', href="/images/icons8-rock-and-roll-hand-32.png")
+    meta(name='viewport', content="width=device-width, initial-scale=1.0")
     meta(name='description', content="Example REST API")
 
     link(rel='stylesheet', href="https://fonts.googleapis.com/css?family=Montserrat|Press+Start+2P|Ubuntu&display=swap")
-    link(rel='stylesheet' href='/bootstrap/dist/css/bootstrap.min.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href="/bootstrap/dist/css/bootstrap.min.css")
+    link(rel='stylesheet', href="/stylesheets/style.css")
 
-  body.page-template.App(id="#{slug}_page")
+  body.page-template.App(id="#{locals.slug}_page")
     block header
       include includes/header
 
     article.App.container#main-container
-      if fa_script 
+      if (locals.fa_script)
         div.section-block.row#main-section
           block content
       else 
@@ -25,11 +25,11 @@ html
     block footer
       include includes/footer
 
-    if fa_script 
-      script(src="#{fa_script}")
+    if (locals.fa_script)
+      script(src="#{locals.fa_script}")
       
-    script(src='/jquery/dist/jquery.min.js')
-    script(src='/bootstrap/dist/js/bootstrap.min.js')
-    script(src='/moment/min/moment.min.js')
-    script(src='/javascripts/app.js')
+    script(src="/jquery/dist/jquery.min.js")
+    script(src="/bootstrap/dist/js/bootstrap.min.js")
+    script(src="/moment/min/moment.min.js")
+    script(src="/javascripts/app.js")
   

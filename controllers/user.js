@@ -38,6 +38,8 @@ module.exports = {
   },
 
   login: async (req, res, next) => {
+    let returnObject = {};
+
     // NOTE: password and token should have already been verified before reaching this function
     let { email } = req.body;
     if (!email) {
@@ -58,13 +60,15 @@ module.exports = {
     }
 
     if (!email || !token) {
-      return res.status(401).send({
+      returnObject = {
         ok: false,
         message: "Either invalid email or token provided",
         email: email,
         token: token,
         logged_in: false,
-      });
+      }
+
+      return res.status(401).send(returnObject);
     }
 
     let { logged_in } = req.session;
@@ -75,7 +79,10 @@ module.exports = {
       },
     }).then((dbModel) => {
       if (dbModel) {
-        return dbModel.dataValues.last_used_token.toString();
+        if (typeof dbModel.dataValues.last_used_token === "string") {
+          return dbModel.dataValues.last_used_token.toString();
+        }
+        return dbModel.dataValues.last_used_token;
       }
 
       return null;
@@ -93,30 +100,32 @@ module.exports = {
         req.session.logged_in = true;
 
         if (req.method == "POST") {
-          return res.status(200).send({
+          returnObject = {
             ok: true,
             message: "Login successful",
             email: email,
             token: token,
             logged_in: true,
-          });
+          };
         }
-
-        next();
       });
     }
 
-    if (req.method == "POST") {
-      return res.status(200).send({
+    if (req.method == "POST" && Object.keys(returnObject).length === 0) {
+      returnObject = {
         ok: true,
         message: "Already Logged In",
         email: email,
         token: token,
         logged_in: true,
-      });
+      };
     }
 
-    next();
+    if (Object.keys(returnObject).length > 0) {
+      return res.status(200).send(returnObject);
+    }
+
+    return next();
   },
 
   findById: (req, res) => {
