@@ -4,7 +4,12 @@ This app is a template created with **[express-generator](https://expressjs.com/
 
 ## 💫 Deploy
 
+### Master branch
 You can see live demo of this project [here](https://ancient-bastion-93975.herokuapp.com/)
+
+### Beta branch
+[![Website](https://img.shields.io/website?down_color=red&down_message=down&up_color=green&up_message=up&url=http%3A%2F%2Fnode.ccollins.io%2F)](http://node.ccollins.io)
+[![Deploy Beta](https://github.com/ccollins1544/cc-rest-api/workflows/Deploy%20Beta/badge.svg)](https://github.com/ccollins1544/cc-rest-api/actions)
 
 #### Username: `demo`
 
