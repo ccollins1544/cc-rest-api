@@ -4,7 +4,7 @@ This app is a template created with **[express-generator](https://expressjs.com/
 
 ## 💫 Deploy
 
-### Master branch
+### passport-sequelize branch
 You can see live demo of this project [here](https://ancient-bastion-93975.herokuapp.com/)
 
 ### Beta branch
