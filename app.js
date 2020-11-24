@@ -59,8 +59,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      expires: cookieExpirationTime,
-      // maxAge: parseInt(process.env.EXPIRATION) || seconds * 1000
+      maxAge: parseInt(process.env.EXPIRATION) || seconds * 1000
+      // expires: cookieExpirationTime,
     },
   }),
 );
